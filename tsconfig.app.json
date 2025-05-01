@@ -24,7 +24,8 @@
 
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["vitest", "@testing-library/jest-dom"]
   },
   "include": ["src"]
 }

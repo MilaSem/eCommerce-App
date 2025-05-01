@@ -9,6 +9,7 @@
     "lint": "eslint",
     "format": "prettier --write --ignore-unknown .",
     "stylelint": "stylelint '**/*.css' --fix",
+    "test": "vitest",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -26,6 +27,7 @@
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.22.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",

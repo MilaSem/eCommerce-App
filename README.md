@@ -62,7 +62,6 @@
 ## 📚 <a id="technologies"></a> Стек технологий
 1. **Вёрстка:**
 - HTML5
-- CSS3
 
 2. **Настройка Бэкенд:**
 - CommerceTools API
@@ -70,10 +69,10 @@
 3. **Разработка Фронтенд:**
 - JavaScript
 - TypeScript
-- Webpack
+- Vite
 - ESlint
 - Prettier
-- Hasky
+- Husky
 - Commitlint
 - Lint-staged
 - React-router
@@ -84,7 +83,7 @@
 
 5. **Библиотеки**
 - Zustand (библиотека для управления состоянием)
-- Antd (библиотека компонентов UI для React)
+- Ant Design (библиотека компонентов UI для React)
 
 6. **Управление**
 - Git / Github

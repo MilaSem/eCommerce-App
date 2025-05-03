@@ -67,7 +67,6 @@
 - CommerceTools API
 
 3. **Разработка Фронтенд:**
-- JavaScript
 - TypeScript
 - Vite
 - ESlint

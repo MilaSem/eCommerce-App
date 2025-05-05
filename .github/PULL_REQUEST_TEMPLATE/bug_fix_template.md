@@ -1,3 +1,6 @@
+**What was fixed**
+Clearly describe the issue and how you resolved it.
+
 **Steps to reproduce (before fix)**
 1. Step 1: Describe the first step to reproduce the bug.
 2. Step 2: Describe the second step.

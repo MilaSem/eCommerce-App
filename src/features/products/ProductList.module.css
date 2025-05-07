@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+
+  transition: box-shadow 0.3s ease;
+}
+
+.info {
+  padding: 0 3rem;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
+}
+
+.image {
+  max-width: 100%;
+  height: auto;
+}

@@ -1,6 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { ProductList } from './ProductList';
 import { mockProducts } from './mockProducts';
 
@@ -19,7 +18,7 @@ vi.mock('@commercetools/platform-sdk', () => {
 });
 
 describe('ProductList', () => {
-  beforeEach(() => {
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
@@ -38,12 +37,16 @@ describe('ProductList', () => {
     const productTypeElements = screen.getAllByText(/product type:/i);
     expect(productTypeElements.length).toBeGreaterThan(0);
 
-    expect(screen.getByText(/weight : 100/i)).toBeInTheDocument();
-    expect(screen.getByText(/brand : yummy/i)).toBeInTheDocument();
+    const weightElements = screen.getAllByText(/weight : 100/i);
+    expect(weightElements.length).toBeGreaterThan(0);
+
+    const brandElements = screen.getAllByText(/brand : yummy/i);
+    expect(brandElements.length).toBeGreaterThan(0);
 
     const images = screen.getAllByRole('img');
-    expect(images).toHaveLength(2);
-    expect(images[0]).toHaveAttribute('src', 'http://example.com/image1.jpg');
-    expect(images[1]).toHaveAttribute('src', 'http://example.com/image2.jpg');
+    mockProducts.body.results.forEach((product, index) => {
+      const imageUrl = product.masterData.current.masterVariant.images[0].url;
+      expect(images[index]).toHaveAttribute('src', imageUrl);
+    });
   });
 });

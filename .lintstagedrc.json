@@ -1,4 +1,4 @@
 {
-  "*": ["eslint", "prettier --write --ignore-unknown ."],
-  "**/*.css": ["stylelint --fix"]
+  "*": ["eslint", "prettier --check --ignore-unknown ."],
+  "**/*.css": ["stylelint"]
 }

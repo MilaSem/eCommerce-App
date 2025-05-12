@@ -1,38 +1,19 @@
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
-import { ctpClient } from '../BuilderClient';
-import { useEffect, useState } from 'react';
-import { Product } from '@commercetools/platform-sdk';
-
 import styles from './ProductList.module.css';
 
-const apiRoot = createApiBuilderFromCtpClient(ctpClient).withProjectKey({
-  projectKey: 'honey-shop',
-});
+import useSWR from 'swr';
+import { commerceToolsService } from '@/services/commerceToolsService';
+import { Product } from '@commercetools/platform-sdk';
+
+const fetcher = async (): Promise<Product[]> =>
+  await commerceToolsService.getProducts();
 
 export const ProductList = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const { data: products, error } = useSWR<Product[], Error>(
+    '/api/products',
+    fetcher,
+  );
 
-  const fetchProducts = async () => {
-    try {
-      const response = await apiRoot.products().get().execute();
-      console.log(response.body.results);
-      setProducts(response.body.results);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
+  if (!products) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
@@ -40,14 +21,13 @@ export const ProductList = () => {
       {products.map((product) => (
         <div key={product.id} className={styles.card}>
           <h3>Product type: {product.key}</h3>
-          {product.masterData.current.masterVariant.images &&
-            product.masterData.current.masterVariant.images.length > 0 && (
-              <img
-                src={product.masterData.current.masterVariant.images[0].url}
-                alt={product.key}
-                className={styles.image}
-              />
-            )}
+          {product.masterData.current.masterVariant.images?.length ? (
+            <img
+              src={product.masterData.current.masterVariant.images[0].url}
+              alt={product.key}
+              className={styles.image}
+            />
+          ) : null}
 
           <ul className={styles.info}>
             {product.masterData.current.masterVariant.attributes?.map(

@@ -15,18 +15,20 @@ export default tseslint.config(
   {
     extends: [
       js.configs.recommended,
-      ...tseslint.configs.recommended,
+      ...tseslint.configs.recommendedTypeChecked,
       reactPlugin.configs.flat.recommended,
       reactPlugin.configs.flat['jsx-runtime'],
       jsxA11y.flatConfigs.recommended,
-      testingLibrary.configs['flat/react'],
-      jestDom.configs['flat/recommended'],
       configPrettier,
     ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     settings: {
       react: {
@@ -50,5 +52,9 @@ export default tseslint.config(
   {
     files: ['**/*.test.{ts,tsx}'],
     ...vitest.configs.recommended,
+    extends: [
+      testingLibrary.configs['flat/react'],
+      jestDom.configs['flat/recommended'],
+    ],
   },
 );

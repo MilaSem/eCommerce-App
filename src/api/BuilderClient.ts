@@ -4,7 +4,7 @@ import {
   type HttpMiddlewareOptions,
 } from '@commercetools/ts-client';
 
-const projectKey = 'honey-key';
+const projectKey = import.meta.env.VITE_CTP_PROJECT_KEY;
 const scopes = [import.meta.env.VITE_CTP_SCOPES];
 
 const authMiddlewareOptions: AuthMiddlewareOptions = {
@@ -15,12 +15,12 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
     clientSecret: import.meta.env.VITE_CTP_CLIENT_SECRET,
   },
   scopes,
-  httpClient: window.fetch,
+  httpClient: globalThis.fetch,
 };
 
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: import.meta.env.VITE_CTP_API_URL,
-  httpClient: window.fetch,
+  httpClient: globalThis.fetch,
 };
 
 export const ctpClient = new ClientBuilder()

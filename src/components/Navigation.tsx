@@ -11,6 +11,9 @@ export const Navigation = () => {
         <li>
           <Link to="/about">About Us</Link>
         </li>
+        <li>
+          <Link to="/catalog">Catalog</Link>
+        </li>
       </ul>
     </nav>
   );

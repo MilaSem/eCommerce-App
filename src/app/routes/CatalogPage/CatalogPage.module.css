@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 60%;
+  margin: 0 auto;
+
+  list-style-type: none;
+}
+
+.container a {
+  color: #282828;
+}
+
+.container a:hover {
+  color: #595151;
+}

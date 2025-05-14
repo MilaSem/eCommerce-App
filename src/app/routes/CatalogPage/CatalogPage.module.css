@@ -15,5 +15,9 @@
 }
 
 .container a:hover {
-  color: #595151;
+  color: #575757;
+}
+
+h2 {
+  margin-top: 3%;
 }

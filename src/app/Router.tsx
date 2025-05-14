@@ -3,6 +3,10 @@ import { MainPage } from './routes/MainPage/MainPage';
 import { AboutPage } from './routes/AboutPage/AboutPage';
 import { CatalogPage } from './routes/CatalogPage/CatalogPage';
 import { Navigation } from '../components/Navigation';
+import { Page404 } from './routes/Page404/Page404';
+import { CartPage } from './routes/СartPage/CartPage';
+import { RegisterPage } from './routes/RegisterPage/RegisterPage';
+import { UserProfile } from './routes/UserProfile/UserProfile';
 
 export const AppRouter = () => {
   return (
@@ -12,6 +16,10 @@ export const AppRouter = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/catalog" element={<CatalogPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/page404" element={<Page404 />} />
       </Routes>
     </Router>
   );

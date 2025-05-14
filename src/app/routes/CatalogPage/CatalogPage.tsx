@@ -8,28 +8,28 @@ export const CatalogPage = () => {
       <h2>Choose Product Category</h2>
       <ul className={styles.container}>
         <li>
-          <Link to="/#forest">Forest</Link>
+          <Link to="/page404">Forest</Link>
         </li>
         <li>
-          <Link to="/#blossom">Blossom</Link>
+          <Link to="/page404">Blossom</Link>
         </li>
         <li>
-          <Link to="/#dark">Dark</Link>
+          <Link to="/page404">Dark</Link>
         </li>
         <li>
-          <Link to="/#herb">Herb</Link>
+          <Link to="/page404">Herb</Link>
         </li>
         <li>
-          <Link to="/#mountain">Mountain</Link>
+          <Link to="/page404">Mountain</Link>
         </li>
         <li>
-          <Link to="/#creamy">Creamy</Link>
+          <Link to="/page404">Creamy</Link>
         </li>
         <li>
-          <Link to="/#nuts-in-honey">Nuts in honey</Link>
+          <Link to="/page404">Nuts in honey</Link>
         </li>
         <li>
-          <Link to="/#bee-products">Bee products</Link>
+          <Link to="/page404">Bee products</Link>
         </li>
       </ul>
       <ProductList />

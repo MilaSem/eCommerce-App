@@ -1,6 +1,6 @@
 import React from 'react';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 
 type FieldType = {
   email?: string;
@@ -29,46 +29,44 @@ const Auth: React.FC = () => (
     autoComplete="off"
   >
 <Form.Item<FieldType>
-        label="Почта"
+        label="email"
         name="email"
         rules={[
-          { required: true, message: "Пожалуйста, введите email!" },
-          { type: "email", message: "Введите корректный email!" },
+          { required: true, message: "Please enter your email!" },
+          { type: "email", message: "Enter the correct email!" },
         ]}
       >
         <Input />
       </Form.Item>
 
     <Form.Item<FieldType>
-      label="Пароль"
+      label="password"
       name="password"
-      rules={[{ required: true, message: 'Введите пароль' },
-        { min: 8, message: 'Пароль должен быть не менее 8 символов' },
+      rules={[{ required: true, message: 'Enter the password' },
+        { min: 8, message: 'The password must be at least 8 characters long' },
         {
           pattern: /[A-Z]/,
-          message: 'Пароль должен содержать хотя бы одну заглавную букву',
+          message: 'The password must contain at least one uppercase letter',
           
         },
         {
           pattern: /[0-9]/,
-          message: 'Пароль должен содержать хотя бы одну цифру',
+          message: 'The password must contain at least one digit',
         },
         {
             pattern: /[a-z]/,
-          message: 'Пароль должен содержать хотя бы одну строчную букву'
+          message: 'The password must contain at least one lowercase letter'
         }
       ]}
     >       
       <Input.Password />
     </Form.Item>
 
-    <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
-      <Checkbox>Remember me</Checkbox>
-    </Form.Item>
+ 
 
     <Form.Item label={null}>
       <Button type="primary" htmlType="submit">
-        Отправить
+        send
       </Button>
     </Form.Item>
   </Form>

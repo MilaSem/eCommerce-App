@@ -16,7 +16,7 @@ export const AboutPage = () => {
           </a>
         </li>
         <li>
-          <a href="Nadezhda Kozochkina" target="blank">
+          <a href="https://github.com/kozochkina82" target="blank">
             Nadezhda Kozochkina
           </a>
         </li>

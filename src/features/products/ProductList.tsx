@@ -1,15 +1,14 @@
+import useSWR from 'swr';
+import type { Product } from '@commercetools/platform-sdk';
+import { getProducts } from '@/services/getProductsService';
+
 import styles from './ProductList.module.css';
 
-import useSWR from 'swr';
-import { commerceToolsService } from '@/services/commerceToolsService';
-import { Product } from '@commercetools/platform-sdk';
-
-const fetcher = async (): Promise<Product[]> =>
-  await commerceToolsService.getProducts();
+const fetcher = (): Promise<Product[]> => getProducts();
 
 export const ProductList = () => {
   const { data: products, error } = useSWR<Product[], Error>(
-    '/api/products',
+    'products',
     fetcher,
   );
 

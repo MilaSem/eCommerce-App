@@ -5,8 +5,12 @@ nav {
 
 nav ul {
   display: flex;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  max-width: 1280px;
   list-style-type: none;
 }
 

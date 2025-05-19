@@ -4,20 +4,18 @@ export const validateAge = (
   _rule: RuleObject,
   value: Date | null,
 ): Promise<void> => {
-  if (!value) {
-    return Promise.reject(new Error('pick date of birth'));
-  }
+  if (value) {
+    const birthDate = new Date(value.toISOString());
 
-  const birthDate = new Date(value.toISOString());
+    const today = new Date();
+    const ageDifMs = today.getTime() - birthDate.getTime();
 
-  const today = new Date();
-  const ageDifMs = today.getTime() - birthDate.getTime();
+    const ageDate = new Date(ageDifMs);
+    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
-  const ageDate = new Date(ageDifMs);
-  const age = Math.abs(ageDate.getUTCFullYear() - 1970);
-
-  if (age < 12) {
-    return Promise.reject(new Error('age must be over 12 years'));
+    if (age < 12) {
+      return Promise.reject(new Error('age must be over 12 years'));
+    }
   }
 
   return Promise.resolve();
@@ -27,22 +25,19 @@ export const validatePassword = (
   _rule: RuleObject,
   value: string | undefined,
 ): Promise<void> => {
-  if (!value) {
-    return Promise.reject(new Error('enter your password'));
-  }
-  if (value !== value.trim()) {
+  if (value && value !== value.trim()) {
     return Promise.reject(new Error('remove spaces from the ends'));
   }
-  if (value.length < 8) {
+  if (value && value.length < 8) {
     return Promise.reject(new Error('minimum 8 characters'));
   }
-  if (!/[A-Z]/.test(value)) {
+  if (value && !/[A-Z]/.test(value)) {
     return Promise.reject(new Error('add an uppercase letter'));
   }
-  if (!/[a-z]/.test(value)) {
+  if (value && !/[a-z]/.test(value)) {
     return Promise.reject(new Error('add an lowercase letter'));
   }
-  if (!/\d/.test(value)) {
+  if (value && !/\d/.test(value)) {
     return Promise.reject(new Error('add a digit'));
   }
   return Promise.resolve();

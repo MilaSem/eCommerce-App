@@ -15,9 +15,7 @@ export interface PersonalData {
 }
 
 export interface ApiError {
-  body?: {
-    message: string;
-  };
+  message: string;
 }
 
 export type AddressMode = 'same' | 'diff';

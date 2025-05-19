@@ -123,7 +123,7 @@ export const RegisterForm: React.FC = () => {
         }
       })
       .catch((error: ApiError) => {
-        message.error(error.body?.message);
+        message.error(error.message);
       });
   };
 
@@ -167,7 +167,10 @@ export const RegisterForm: React.FC = () => {
           <Form.Item
             label="Date of birth"
             name="dateOfBirth"
-            rules={[{ validator: validateAge }]}
+            rules={[
+              { required: true, message: 'pick date of birth' },
+              { validator: validateAge },
+            ]}
           >
             <DatePicker format="MM/DD/YYYY" />
           </Form.Item>
@@ -187,7 +190,10 @@ export const RegisterForm: React.FC = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ validator: validatePassword }]}
+            rules={[
+              { required: true, message: 'enter your password' },
+              { validator: validatePassword },
+            ]}
           >
             <Input.Password />
           </Form.Item>

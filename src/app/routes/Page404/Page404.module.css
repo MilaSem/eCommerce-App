@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  color: black;
+}
+
+.container h1 {
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
+
+.container a {
+  margin-top: 5%;
+  font-size: 2em;
+  color: black;
+  text-transform: uppercase;
+}
+
+.container a:hover {
+  color: #f04c42;
+}
+
+.container p {
+  padding: 20px 5px;
+  font-size: 1.5em;
+}

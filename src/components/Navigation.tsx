@@ -11,6 +11,18 @@ export const Navigation = () => {
         <li>
           <Link to="/about">About Us</Link>
         </li>
+        <li>
+          <Link to="/catalog">Catalog</Link>
+        </li>
+        <li>
+          <Link to="/cart">Shopping Cart</Link>
+        </li>
+        <li>
+          <Link to="/register">Registration</Link>
+        </li>
+        <li>
+          <Link to="/profile">Your Profile</Link>
+        </li>
       </ul>
     </nav>
   );

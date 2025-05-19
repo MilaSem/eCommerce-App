@@ -1,0 +1,41 @@
+body {
+  overflow: hidden;
+}
+
+.section {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--thin-border);
+  border-radius: 4px;
+}
+
+.form {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  align-items: center;
+}
+
+.header {
+  margin: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.checkbox {
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.country {
+  width: 10rem;
+}
+
+.button {
+  width: 5rem;
+}

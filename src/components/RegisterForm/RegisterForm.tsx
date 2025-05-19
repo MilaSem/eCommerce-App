@@ -13,6 +13,7 @@ import {
 
 import { customerCreate } from '@/services/customerCreateService';
 import { customerStore } from '@/stores/customerStore';
+import { validateAge, validatePassword } from '@/utils/validators';
 
 import { AddressBlock } from '@/components/RegisterForm/AddressBlock';
 
@@ -117,6 +118,7 @@ export const RegisterForm: React.FC = () => {
       .then((response) => {
         if (response) {
           login(response);
+          console.log(response.body);
           void navigate('/');
         }
       })
@@ -137,7 +139,13 @@ export const RegisterForm: React.FC = () => {
           <Form.Item
             label="First Name"
             name="firstName"
-            rules={[{ required: true, message: 'enter your first name' }]}
+            rules={[
+              { required: true, message: 'enter your first name' },
+              {
+                pattern: /^[A-Za-z]+$/,
+                message: 'must contain only letters',
+              },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -145,7 +153,13 @@ export const RegisterForm: React.FC = () => {
           <Form.Item
             label="Last Name"
             name="lastName"
-            rules={[{ required: true, message: 'enter your last name' }]}
+            rules={[
+              { required: true, message: 'enter your last name' },
+              {
+                pattern: /^[A-Za-z]+$/,
+                message: 'must contain only letters',
+              },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -153,7 +167,7 @@ export const RegisterForm: React.FC = () => {
           <Form.Item
             label="Date of birth"
             name="dateOfBirth"
-            rules={[{ required: true, message: 'pick your date of birth' }]}
+            rules={[{ validator: validateAge }]}
           >
             <DatePicker format="MM/DD/YYYY" />
           </Form.Item>
@@ -173,7 +187,7 @@ export const RegisterForm: React.FC = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: 'enter password' }]}
+            rules={[{ validator: validatePassword }]}
           >
             <Input.Password />
           </Form.Item>

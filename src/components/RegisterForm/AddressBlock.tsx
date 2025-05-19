@@ -1,6 +1,7 @@
 import { Checkbox, Form, Input, Select } from 'antd';
 import type { AddressData } from './RegisterFormTypes';
 import styles from './RegisterForm.module.css';
+import { validatePostalCode, validateStreet } from '@/utils/validators';
 
 interface AddressBlockProps {
   prefix?: string;
@@ -55,7 +56,17 @@ export const AddressBlock: React.FC<AddressBlockProps> = ({
         <Form.Item
           label="Postal Code"
           name={`${prefix}PostalCode`}
-          rules={[{ required: true, message: 'enter postal code' }]}
+          dependencies={[`${prefix}Country`]}
+          rules={[
+            ({ getFieldValue }) => ({
+              validator: (_, value) =>
+                validatePostalCode(
+                  _,
+                  value as string | undefined,
+                  getFieldValue(`${prefix}Country`) as string | undefined,
+                ),
+            }),
+          ]}
         >
           <Input
             id={`${prefix}_PostalCode`}
@@ -93,7 +104,10 @@ export const AddressBlock: React.FC<AddressBlockProps> = ({
         <Form.Item
           label="City"
           name={`${prefix}City`}
-          rules={[{ required: true, message: 'enter city' }]}
+          rules={[
+            { required: true, message: 'enter city' },
+            { pattern: /^[A-Za-z]+$/, message: 'only letters A-Z or a-z' },
+          ]}
         >
           <Input
             id={`${prefix}_City`}
@@ -106,7 +120,10 @@ export const AddressBlock: React.FC<AddressBlockProps> = ({
         <Form.Item
           label="Street"
           name={`${prefix}StreetName`}
-          rules={[{ required: true, message: 'enter street' }]}
+          rules={[
+            { required: true, message: 'enter street' },
+            { validator: validateStreet },
+          ]}
         >
           <Input
             id={`${prefix}_StreetName`}

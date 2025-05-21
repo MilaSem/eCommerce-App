@@ -8,8 +8,8 @@ export const Page404 = () => {
       <p>
         Sorry, the page you requested was <b>not found</b>.
       </p>
-      <img src="./src/assets/bee_404.svg" width="800" alt="page_404"></img>
-      <Link to="/">Return to main page</Link>
+      <img src="/bee_404.svg" className={styles.image} alt="page_404" />
+      <Link to="/">to main page</Link>
     </div>
   );
 };

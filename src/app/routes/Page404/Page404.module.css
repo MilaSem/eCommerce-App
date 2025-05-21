@@ -12,13 +12,6 @@
   margin-bottom: 5%;
 }
 
-.container a {
-  margin-top: 5%;
-  font-size: 2em;
-  color: black;
-  text-transform: uppercase;
-}
-
 .container a:hover {
   color: #f04c42;
 }
@@ -26,4 +19,10 @@
 .container p {
   padding: 20px 5px;
   font-size: 1.5em;
+}
+
+.image {
+  width: 85%;
+  max-width: 30rem;
+  margin-bottom: 2rem;
 }

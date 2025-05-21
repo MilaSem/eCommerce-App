@@ -200,7 +200,7 @@ export const RegisterForm: React.FC = () => {
         </div>
       </div>
 
-      <div className={styles.row}>
+      <div className={styles.radioblock}>
         <h4>Billing and shipping addresses:</h4>
         <Radio.Group
           onChange={handleRadioChange}

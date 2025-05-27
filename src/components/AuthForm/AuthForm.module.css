@@ -1,0 +1,10 @@
+.section {
+  padding: 1rem;
+  border: 1px solid var(--thin-border);
+  border-radius: 4px;
+}
+
+.button {
+  width: 5rem;
+  margin-top: 2rem;
+}

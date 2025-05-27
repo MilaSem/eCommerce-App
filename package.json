@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint",
+    "lint": "eslint '**/*.{ts,tsx}'",
     "format": "prettier --write --ignore-unknown .",
     "stylelint": "stylelint '**/*.css' --fix",
     "test": "vitest",
+    "coverage": "vitest run --coverage.enabled --coverage.all",
     "preview": "vite preview",
     "prepare": "husky"
   },
@@ -24,6 +25,7 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.22.0",
@@ -32,6 +34,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "^3.1.2",
     "@vitest/eslint-plugin": "^1.1.43",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.2",

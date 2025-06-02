@@ -1,0 +1,45 @@
+.card {
+  max-width: 50rem;
+  margin: 1rem auto;
+}
+
+.carousel {
+  z-index: 0;
+}
+
+.image {
+  width: 50%;
+  max-width: 400px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 1rem;
+}
+
+.title {
+  margin-top: 1rem;
+}
+
+.description {
+  margin-top: 0.5rem;
+}
+
+.pricescontainer {
+  margin-top: 1rem;
+}
+
+.oldprice {
+  color: #888;
+  text-decoration: line-through;
+}
+
+.newprice {
+  color: #e06a1d;
+}
+
+.price {
+  font-size: 1rem;
+}
+
+.attributes {
+  margin-top: 1.5rem;
+}

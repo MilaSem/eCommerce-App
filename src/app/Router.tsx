@@ -11,6 +11,7 @@ import { LoginPage } from './routes/LoginPage/LoginPage';
 import { LoginRoute } from './routes/LoginPage/LoginRoute';
 import { RegisterPage } from './routes/RegisterPage/RegisterPage';
 import { Page404 } from './routes/Page404/Page404';
+import { ProductDetails } from '@/components/ProductDetails/ProductDetais';
 
 export const AppRouter = () => {
   return (
@@ -32,6 +33,9 @@ export const AppRouter = () => {
           }
         />
         <Route path="/register" element={<RegisterPage />} />
+
+        <Route path="/catalog/:productId" element={<ProductDetails />} />
+
         <Route path="*" element={<Page404 />} />
       </Routes>
     </Router>

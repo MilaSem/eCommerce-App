@@ -1,0 +1,26 @@
+.card {
+  width: 20rem;
+}
+
+.image {
+  width: auto;
+  height: 12.5rem;
+}
+
+.space {
+  margin-top: 0.8rem;
+}
+
+.oldprice {
+  color: #888;
+  text-decoration: line-through;
+}
+
+.newprice {
+  color: #e06a1d;
+}
+
+.productstory {
+  overflow: visible;
+  white-space: wrap;
+}

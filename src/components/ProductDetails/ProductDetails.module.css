@@ -1,0 +1,58 @@
+.card {
+  max-width: 50rem;
+  margin: 1rem auto;
+  background-color: #fffaef;
+  box-shadow: 4px 4px 8px 0 rgb(255 0 0 / 50%);
+}
+
+.carousel {
+  z-index: 0;
+}
+
+.image {
+  width: 50%;
+  max-width: 400px;
+  height: 400px;
+
+  margin: 0 auto;
+
+  object-fit: cover;
+
+  border-radius: 1rem;
+}
+
+.title {
+  margin-top: 1rem;
+}
+
+.description {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.pricescontainer {
+  margin-top: 1rem;
+}
+
+.oldprice {
+  color: #888;
+  text-decoration: line-through;
+}
+
+.newprice {
+  color: #e06a1d;
+}
+
+.price {
+  font-size: 1.5rem;
+}
+
+.attributes {
+  margin: 1.5rem auto 0;
+  width: 40rem;
+  font-size: 1rem;
+}
+
+.row:nth-child(odd) span {
+  font-weight: bold;
+}

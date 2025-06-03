@@ -1,17 +1,27 @@
-
-import { Card, Descriptions, Button, Modal, Form, Input, message, DatePicker } from 'antd';
+import { Button, Modal, Form, Input, message, DatePicker } from 'antd';
 import { FC, useState } from 'react';
 import { customerStore } from '../../stores/customerStore';
-import { ctpClient } from '../../api/CtpClient';
+import { apiRoot } from '@/api/api';
+import styles from './Profile.module.css';
+import { validateAge, validateStreet } from '@/utils/validators';
 
+interface ProfileFormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  postalCode: string;
+  country: string;
+  city: string;
+  street: string;
+  apartment: string;
+}
 
-
-
-const Profile: FC = () => {
-
-  const customer = customerStore((state) => state.currentCustomer?.body.customer);
+export const Profile: FC = () => {
+  const customer = customerStore(
+    (state) => state.currentCustomer?.body.customer,
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<ProfileFormValues>();
 
   if (!customer) return null;
 
@@ -20,7 +30,7 @@ const Profile: FC = () => {
       firstName: customer.firstName,
       lastName: customer.lastName,
       email: customer.email,
-      postal: customer.addresses[0].postalCode,
+      postalCode: customer.addresses[0].postalCode,
       country: customer.addresses[0].country,
       city: customer.addresses[0].city,
       street: customer.addresses[0].streetName,
@@ -29,60 +39,94 @@ const Profile: FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = async () => {
+  const handleOkAsync = async () => {
     try {
       const values = await form.validateFields();
-      const apiRoot = ctpClient.createClient();
 
-      await apiRoot.customers().withId({ ID: customer.id }).post({
-        body: {
-          version: customer.version,
-          actions: [
-            { action: 'setFirstName', firstName: values.firstName },
-            { action: 'setLastName', lastName: values.lastName },
-            { action: 'changeEmail', email: values.email },
-            {
-              action: 'changeAddress',
-              address: {
-                country: values.country,
-                city: values.city,
-                postalCode: values.postalCode,
-                streetName: values.streetName,
+      await apiRoot
+        .customers()
+        .withId({ ID: customer.id })
+        .post({
+          body: {
+            version: customer.version,
+            actions: [
+              { action: 'setFirstName', firstName: values.firstName },
+              { action: 'setLastName', lastName: values.lastName },
+              { action: 'changeEmail', email: values.email },
+              {
+                action: 'changeAddress',
+                address: {
+                  country: values.country,
+                  city: values.city,
+                  postalCode: values.postalCode,
+                  streetName: values.street,
+                },
               },
-            },
-          ],
-        },
-      }).execute();
+            ],
+          },
+        })
+        .execute();
 
-      message.success('Данные обновлены');
+      message.success('Data updated');
       setIsModalOpen(false);
     } catch (error) {
-      message.error('Не удалось обновить данные');
+      message.error('Failed to update data');
+      console.error(error);
     }
   };
 
-  return (
-    <Card
-      style={{ width: 1000, margin: '0 auto', marginTop: 50, border: '1px solid #d9d9d9' }}
-      bodyStyle={{ display: 'flex', gap: 20 }}
-    >
-      <Descriptions column={1} style={{ flex: 1 }}>
-        <Descriptions.Item label="First Name">{customer.firstName}</Descriptions.Item>
-        <Descriptions.Item label="Last Name">{customer.lastName}</Descriptions.Item>
-        <Descriptions.Item label="Date of birth">{customer.dateOfBirth}</Descriptions.Item>
-      </Descriptions>
-      <Descriptions column={1} style={{ flex: 1 }}>
-        <Descriptions.Item label="Postal Code">{customer.addresses[0].postalCode}</Descriptions.Item>
-        <Descriptions.Item label="Country">{customer.addresses[0].country}</Descriptions.Item>
-        <Descriptions.Item label="City">{customer.addresses[0].city}</Descriptions.Item>
-        <Descriptions.Item label="Street">{customer.addresses[0].streetName}</Descriptions.Item>
-        <Descriptions.Item label="Apartment">{customer.addresses[0].apartment}</Descriptions.Item>
-      </Descriptions>
+  const handleOk = () => {
+    void handleOkAsync();
+  };
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <Button type="primary" onClick={showModal}>Edit profile</Button>
-        <Button type="primary" >Billing</Button>
-        <Button type="primary">Shipping</Button>
+  return (
+    <div className={styles.card}>
+      <div className={styles.group}>
+        <div>
+          <span className={styles.label}>First Name:</span> {customer.firstName}
+        </div>
+        <div>
+          <span className={styles.label}>Last Name:</span> {customer.lastName}
+        </div>
+        <div>
+          <span className={styles.label}>Date of birth:</span>{' '}
+          {customer.dateOfBirth}
+        </div>
+      </div>
+
+      <div className={styles.group}>
+        <div>
+          <span className={styles.label}>Postal Code:</span>{' '}
+          {customer.addresses[0].postalCode}
+        </div>
+        <div>
+          <span className={styles.label}>Country:</span>{' '}
+          {customer.addresses[0].country}
+        </div>
+        <div>
+          <span className={styles.label}>City:</span>{' '}
+          {customer.addresses[0].city}
+        </div>
+        <div>
+          <span className={styles.label}>Street:</span>{' '}
+          {customer.addresses[0].streetName}
+        </div>
+        <div>
+          <span className={styles.label}>Apartment:</span>{' '}
+          {customer.addresses[0].apartment}
+        </div>
+      </div>
+
+      <div className={styles.control}>
+        <Button className={styles.button} type="primary" onClick={showModal}>
+          Edit profile
+        </Button>
+        <Button className={styles.button} type="primary">
+          Billing
+        </Button>
+        <Button className={styles.button} type="primary">
+          Shipping
+        </Button>
       </div>
 
       <Modal
@@ -94,27 +138,39 @@ const Profile: FC = () => {
       >
         <Form form={form} layout="vertical">
           <Form.Item
-            name="first Name"
+            name="firstName"
             label="First Name"
-            rules={[{ required: true, message: 'enter your first name' }]}
+            rules={[
+              { required: true, message: 'enter your first name' },
+              {
+                pattern: /^[A-Za-z]+$/,
+                message: 'must contain only letters',
+              },
+            ]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            name="Last Name"
+            name="lastName"
             label="Last Name"
-            rules={[{ required: true, message: 'enter your last name' }]}
+            rules={[
+              { required: true, message: 'enter your last name' },
+              {
+                pattern: /^[A-Za-z]+$/,
+                message: 'must contain only letters',
+              },
+            ]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            label="Date of birth"
             name="dateOfBirth"
+            label="Date of birth"
             rules={[
               { required: true, message: 'pick date of birth' },
-
+              { validator: validateAge },
             ]}
           >
             <DatePicker format="MM/DD/YYYY" />
@@ -122,52 +178,53 @@ const Profile: FC = () => {
 
           <Form.Item
             name="email"
-            label="email"
+            label="Email"
             rules={[
               { required: true, message: 'enter your email' },
-              { type: 'email', message: 'enter your email' },
+              { type: 'email', message: 'enter a valid email' },
             ]}
           >
             <Input />
-            <Form.Item
-              name="Country"
-              label="Country"
-              rules={[{ required: true, message: 'enter your country' }]}
-            >
-              <Input />
-            </Form.Item>
+          </Form.Item>
+          <Form.Item
+            name="country"
+            label="Country"
+            rules={[{ required: true, message: 'enter your country' }]}
+          >
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              name="city"
-              label="city"
-              rules={[{ required: true, message: 'enter your city' }]}
-            >
-              <Input placeholder="Москва" />
-            </Form.Item>
+          <Form.Item
+            name="city"
+            label="City"
+            rules={[{ required: true, message: 'enter your city' }]}
+          >
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              name="street"
-              label="street"
-              rules={[{ required: true, message: 'enter your street' }]}
-            >
-              <Input />
-            </Form.Item>
+          <Form.Item
+            name="street"
+            label="Street"
+            rules={[
+              { required: true, message: 'enter street' },
+              { validator: validateStreet },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-            <Form.Item
-              name="postalCode"
-              label="postalCode"
-              rules={[
-                { required: true, message: 'enter your postalCode' },
-                { pattern: /^\d{5,6}$/, message: 'enter your postalCode' },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+          <Form.Item
+            name="postalCode"
+            label="Postal Code"
+            rules={[
+              { required: true, message: 'enter your postal code' },
+              { pattern: /^\d{5,6}$/, message: 'enter your postal code' },
+            ]}
+          >
+            <Input />
           </Form.Item>
         </Form>
       </Modal>
-    </Card>
+    </div>
   );
 };
-
-export default Profile;

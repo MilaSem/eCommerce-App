@@ -93,7 +93,7 @@ export const ProductDetails: React.FC = () => {
                 label={attribute.name.replace(/-/g, ' ')}
                 span={1}
               >
-                {attribute.value}
+                {String(attribute.value)}
               </Descriptions.Item>
             ),
         )}

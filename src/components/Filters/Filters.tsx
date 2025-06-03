@@ -60,7 +60,6 @@ export const Filters: React.FC<FiltersProps> = ({
           className={styles.select}
           value={filters.brand || ''}
           onChange={(value) => handleChange('brand', value)}
-          allowClear
         >
           <Option value="">All</Option>
           <Option value="dobryishmel">dobryishmel</Option>
@@ -74,7 +73,6 @@ export const Filters: React.FC<FiltersProps> = ({
           className={styles.select}
           value={filters['floral-source'] || ''}
           onChange={(value) => handleChange('floral-source', value)}
-          allowClear
         >
           <Option value="">All</Option>
           <Option value="clover">clover</Option>
@@ -89,7 +87,6 @@ export const Filters: React.FC<FiltersProps> = ({
           className={styles.select}
           value={filters.color || ''}
           onChange={(value) => handleChange('color', value)}
-          allowClear
         >
           <Option value="">All</Option>
           <Option value="light amber">light amber</Option>

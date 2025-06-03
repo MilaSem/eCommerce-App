@@ -44,7 +44,7 @@ export const fetchFilteredProducts = async (
   try {
     const response = await apiRoot
       .products()
-      .get({ queryArgs: { where: combinedFilterQuery } })
+      .get({ queryArgs: { where: combinedFilterQuery, limit: 50 } })
       .execute();
     return response.body.results;
   } catch (error) {

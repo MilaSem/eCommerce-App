@@ -12,6 +12,7 @@ import { LoginRoute } from './routes/LoginPage/LoginRoute';
 import { RegisterPage } from './routes/RegisterPage/RegisterPage';
 import { Page404 } from './routes/Page404/Page404';
 import { ProductDetails } from '@/components/ProductDetails/ProductDetais';
+import { UserProfileRoute } from './routes/UserProfile/UserProfileRoute';
 
 export const AppRouter = () => {
   return (
@@ -22,7 +23,15 @@ export const AppRouter = () => {
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/profile" element={<UserProfile />} />
+
+        <Route
+          path="/profile"
+          element={
+            <UserProfileRoute>
+              <UserProfile />
+            </UserProfileRoute>
+          }
+        />
 
         <Route
           path="/login"

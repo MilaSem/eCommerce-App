@@ -96,9 +96,11 @@ export const Catalog = () => {
         : nameB.localeCompare(nameA);
     } else if (sortCriteria === 'price') {
       const priceA =
-        a.masterData?.current?.masterVariant?.prices[0]?.value?.centAmount || 0;
+        a.masterData?.current?.masterVariant?.prices![0]?.value?.centAmount ||
+        0;
       const priceB =
-        b.masterData?.current?.masterVariant?.prices[0]?.value?.centAmount || 0;
+        b.masterData?.current?.masterVariant?.prices![0]?.value?.centAmount ||
+        0;
       return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
     }
     return 0;

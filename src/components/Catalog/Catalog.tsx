@@ -31,9 +31,6 @@ export const Catalog = () => {
       try {
         const types = await fetchProductTypes();
         setProductTypes(types);
-        if (selectedTypeId === 'all' && types.length > 0) {
-          setSelectedTypeId(types[0].id);
-        }
       } catch (error) {
         console.error(error);
       }
@@ -82,18 +79,25 @@ export const Catalog = () => {
       return productName.includes(searchQuery.toLowerCase());
     });
 
-  const [sortCriteria, sortOrder] = sortOption.split('_') as [
-    'name' | 'price',
-    'asc' | 'desc',
-  ];
+  const [sortCriteria, sortOrder] = sortOption.split('_');
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortCriteria === 'name') {
-      const nameA = a.masterData?.current?.name?.['en-US']?.toLowerCase() || '';
-      const nameB = b.masterData?.current?.name?.['en-US']?.toLowerCase() || '';
-      return sortOrder === 'asc'
-        ? nameA.localeCompare(nameB)
-        : nameB.localeCompare(nameA);
+      const nameA = a.masterData?.current?.name?.['en-US'] || '';
+      const nameB = b.masterData?.current?.name?.['en-US'] || '';
+
+      const normalizedA = nameA.trim().toLowerCase();
+      const normalizedB = nameB.trim().toLowerCase();
+
+      if (sortOrder === 'asc') {
+        if (normalizedA > normalizedB) return 1;
+        if (normalizedA < normalizedB) return -1;
+        return 0;
+      } else {
+        if (normalizedA > normalizedB) return -1;
+        if (normalizedA < normalizedB) return 1;
+        return 0;
+      }
     } else if (sortCriteria === 'price') {
       const priceA =
         a.masterData?.current?.masterVariant?.prices![0]?.value?.centAmount ||

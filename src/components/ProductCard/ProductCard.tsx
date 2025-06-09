@@ -1,7 +1,10 @@
 import { Card, Image, Typography, Space } from 'antd';
 import { Link } from 'react-router';
 
-import type { ProductProjection } from '@commercetools/platform-sdk';
+import type {
+  ProductProjection,
+  ProductVariant,
+} from '@commercetools/platform-sdk';
 
 import styles from './ProductCard.module.css';
 
@@ -31,6 +34,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       currency: 'USD',
     }).format(amount / 100);
   };
+
+  const allVariants: ProductVariant[] = [
+    product.masterVariant,
+    ...(product.variants || []),
+  ];
+
+  const variantPrices = allVariants
+    .map((variant) => {
+      const price = variant.prices?.[0];
+      return price?.discounted?.value.centAmount ?? price?.value.centAmount;
+    })
+    .filter((amount): amount is number => amount !== undefined);
+
+  const uniqueSortedPrices = Array.from(new Set(variantPrices)).sort(
+    (a, b) => a - b,
+  );
 
   return (
     <Link to={`/catalog/${product.id}`}>
@@ -64,6 +83,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </Space>
           ) : (
             <Text strong>{formatPrice(baseCentAmount)}</Text>
+          )}
+
+          {uniqueSortedPrices.length > 0 && (
+            <Text type="secondary" className={styles.variantPrices}>
+              there are options {uniqueSortedPrices.map(formatPrice).join(', ')}
+            </Text>
           )}
         </Space>
       </Card>

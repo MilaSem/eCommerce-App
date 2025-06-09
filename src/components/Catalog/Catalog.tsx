@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Input, Radio } from 'antd';
+import { Button, Input, Radio, Spin } from 'antd';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import useSWR from 'swr';
 
-import type { Product } from '@commercetools/platform-sdk';
+import type { ProductProjection } from '@commercetools/platform-sdk';
 
 import { ProductTabs } from './ProductTabs';
 import { ProductCard } from '../ProductCard/ProductCard';
@@ -14,15 +15,25 @@ import {
   fetchProductTypes,
 } from '@/services/getProductsService';
 
+import { filterProducts, sortProducts } from './catalogUtils';
+
 import styles from './Catalog.module.css';
 
 type SortOption = 'name_asc' | 'name_desc' | 'price_asc' | 'price_desc';
+
+type FiltersPairs = Record<string, string | number | boolean>;
 
 export const Catalog = () => {
   const [productTypes, setProductTypes] = useState<
     Array<{ id: string; name: string }>
   >([]);
   const [selectedTypeId, setSelectedTypeId] = useState<string>('all');
+
+  const [draftFilters, setDraftFilters] = useState<FiltersPairs>({});
+  const [appliedFilters, setAppliedFilters] = useState<FiltersPairs>({});
+
+  const [filtersVisible, setFiltersVisible] = useState(true);
+
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortOption, setSortOption] = useState<SortOption>('name_asc');
 
@@ -38,9 +49,7 @@ export const Catalog = () => {
     void loadProductTypes();
   }, []);
 
-  const fetcher = async ([key, currentFilters]: [string, typeof filters]) => {
-    console.log('Fetching data with key:', key);
-
+  const fetcher = async ([, currentFilters]: [string, FiltersPairs]) => {
     if (Object.keys(currentFilters).length === 0) {
       return await fetchProducts();
     } else {
@@ -48,80 +57,86 @@ export const Catalog = () => {
     }
   };
 
-  const [filters, setFilters] = useState<
-    Record<string, string | number | boolean>
-  >({});
+  useEffect(() => {
+    const savedFilters = localStorage.getItem('filters');
+    if (savedFilters) {
+      try {
+        const parsedFilters = JSON.parse(savedFilters) as FiltersPairs;
+        setDraftFilters(parsedFilters);
+        setAppliedFilters(parsedFilters);
+      } catch (error) {
+        console.error('Error parsing filters from localStorage:', error);
+      }
+    }
+  }, []);
 
-  const swrKey = ['products', filters];
-  const { data: products, error } = useSWR<Product[], Error>(swrKey, fetcher);
+  const swrKey = ['products', appliedFilters];
+  const { data: products, error } = useSWR<ProductProjection[], Error>(
+    swrKey,
+    fetcher,
+  );
 
   const clearFilters = () => {
-    setFilters({});
+    setDraftFilters({});
+    setAppliedFilters({});
+    localStorage.removeItem('filters');
   };
 
-  const handleApplyFilters = () => {
-    setFilters(filters);
+  const handleApplyFilters = (newFilters: FiltersPairs) => {
+    setAppliedFilters(newFilters);
+    setDraftFilters(newFilters);
+    localStorage.setItem('filters', JSON.stringify(newFilters));
+  };
+
+  const handleSelectChange = (
+    key: string,
+    value: string | number | boolean,
+  ) => {
+    const updated = { ...draftFilters, [key]: value };
+    setDraftFilters(updated);
+    setAppliedFilters(updated);
+    localStorage.setItem('filters', JSON.stringify(updated));
   };
 
   if (error) return <div>Download error</div>;
-  if (!products) return <div>Loading...</div>;
 
-  const filteredProducts = products
-    .filter((product) =>
-      selectedTypeId === 'all'
-        ? true
-        : product.productType.id === selectedTypeId,
-    )
-    .filter((product) => {
-      if (!searchQuery.trim()) return true;
-      const productName =
-        product.masterData?.current?.name?.['en-US']?.toLowerCase() || '';
-      return productName.includes(searchQuery.toLowerCase());
-    });
+  if (!products)
+    return (
+      <div className={styles.spin}>
+        <Spin size="large" />
+      </div>
+    );
 
-  const [sortCriteria, sortOrder] = sortOption.split('_');
-
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortCriteria === 'name') {
-      const nameA = a.masterData?.current?.name?.['en-US'] || '';
-      const nameB = b.masterData?.current?.name?.['en-US'] || '';
-
-      const normalizedA = nameA.trim().toLowerCase();
-      const normalizedB = nameB.trim().toLowerCase();
-
-      if (sortOrder === 'asc') {
-        if (normalizedA > normalizedB) return 1;
-        if (normalizedA < normalizedB) return -1;
-        return 0;
-      } else {
-        if (normalizedA > normalizedB) return -1;
-        if (normalizedA < normalizedB) return 1;
-        return 0;
-      }
-    } else if (sortCriteria === 'price') {
-      const priceA =
-        a.masterData?.current?.masterVariant?.prices![0]?.value?.centAmount ||
-        0;
-      const priceB =
-        b.masterData?.current?.masterVariant?.prices![0]?.value?.centAmount ||
-        0;
-      return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
-    }
-    return 0;
-  });
+  const filteredProducts = filterProducts(
+    products,
+    selectedTypeId,
+    searchQuery,
+  );
+  const sortedProducts = sortProducts(filteredProducts, sortOption);
 
   return (
     <>
       <ProductTabs
         types={productTypes}
         selectedTypeId={selectedTypeId}
-        onChange={(typeId) => setSelectedTypeId(typeId)}
+        onChange={setSelectedTypeId}
       />
+
+      <Button
+        className={styles.collapsebutton}
+        type="primary"
+        onClick={() => setFiltersVisible((prev) => !prev)}
+      >
+        Filters {filtersVisible ? <CaretDownOutlined /> : <CaretUpOutlined />}
+      </Button>
+
       <Filters
-        filters={filters}
-        setFilters={setFilters}
+        filters={draftFilters}
+        setFilters={setDraftFilters}
         clearFilters={clearFilters}
         onApplyFilters={handleApplyFilters}
+        onSelectChange={handleSelectChange}
+        visible={filtersVisible}
       />
 
       <div className={styles.search}>

@@ -1,26 +1,25 @@
 import { Card, Image, Typography, Space } from 'antd';
 import { Link } from 'react-router';
 
-import type { Product } from '@commercetools/platform-sdk';
+import type { ProductProjection } from '@commercetools/platform-sdk';
 
 import styles from './ProductCard.module.css';
 
 const { Title, Paragraph, Text } = Typography;
 
 interface ProductCardProps {
-  product: Product;
+  product: ProductProjection;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const name = product.masterData?.current?.name?.['en-US'] || 'untitle';
+  const name = product.name?.['en-US'] || 'untitle';
 
-  const images = product.masterData?.current?.masterVariant?.images || [];
+  const images = product.masterVariant?.images || [];
   const imageUrl = images.length > 0 ? images[0].url : '';
 
-  const description =
-    product.masterData?.current?.description?.['en-US'] || 'undescription';
+  const description = product.description?.['en-US'] || 'undescription';
 
-  const prices = product.masterData?.current?.masterVariant?.prices || [];
+  const prices = product.masterVariant?.prices || [];
 
   const baseCentAmount = prices[0]?.value.centAmount;
   const discountedCentAmount = prices[0]?.discounted?.value.centAmount;

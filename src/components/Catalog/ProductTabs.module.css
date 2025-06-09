@@ -1,0 +1,13 @@
+.tab {
+  align-items: center;
+}
+
+.tab div {
+  font-size: 1rem;
+}
+
+@media (width <= 320px) {
+  .tab div {
+    font-size: 0.8rem;
+  }
+}

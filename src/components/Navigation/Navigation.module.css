@@ -48,8 +48,11 @@
 
 .link {
   display: block;
+
   color: #fff;
   text-decoration: none;
+  text-transform: uppercase;
+
   transition: 0.3s ease;
 }
 

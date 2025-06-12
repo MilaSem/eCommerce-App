@@ -20,12 +20,12 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: orange;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #3890e2;
+  color: orangered;
 }
 
 body {
@@ -56,7 +56,7 @@ button {
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: orangered;
 }
 
 button:focus,
@@ -71,7 +71,7 @@ button:focus-visible {
   }
 
   a:hover {
-    color: #2f8cb8;
+    color: #f5d571;
   }
 
   button {

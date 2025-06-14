@@ -89,3 +89,69 @@ h2 {
   color: #f5aa00;
   text-transform: uppercase;
 }
+@media (width <=1240px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin: 10px auto 0;
+
+    list-style-type: none;
+  }
+
+  .container li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 90%;
+    margin: 15px;
+  }
+
+  .mila {
+    background-size: 80%;
+  }
+
+  .anton {
+    background-size: 80%;
+  }
+
+  .nadya {
+    background-size: 80%;
+  }
+
+  .footer {
+    width: 100%;
+    background-color: #242424;
+  }
+
+  .footercontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 90%;
+    margin: 0 auto;
+    padding: 5px 10px;
+
+    font-size: 1em;
+    color: #f5aa00;
+    text-transform: uppercase;
+  }
+}
+@media (width <=840px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    margin: 20px auto 0;
+  }
+}

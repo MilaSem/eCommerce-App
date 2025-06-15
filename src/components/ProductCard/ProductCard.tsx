@@ -7,14 +7,21 @@ import type {
 } from '@commercetools/platform-sdk';
 
 import styles from './ProductCard.module.css';
+import { AddToCartButton } from '../AddToCartButton/AddToCartButton';
+
+import { useCartStore } from '@/stores/cartStore';
 
 const { Title, Paragraph, Text } = Typography;
 
 interface ProductCardProps {
   product: ProductProjection;
+  onAddToCart?: (productId: string, variantId: number) => Promise<void>;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onAddToCart,
+}) => {
   const name = product.name?.['en-US'] || 'untitle';
 
   const images = product.masterVariant?.images || [];
@@ -50,6 +57,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const uniqueSortedPrices = Array.from(new Set(variantPrices)).sort(
     (a, b) => a - b,
   );
+
+  const { cart, localCart, addingProductId } = useCartStore();
+
+  const isAddingCurrentProduct = addingProductId === product.id;
+
+  const isInCart =
+    cart?.lineItems?.some(
+      (item) =>
+        item.productId === product.id &&
+        item.variant?.id === product.masterVariant.id,
+    ) ||
+    localCart?.some(
+      (item) =>
+        item.productId === product.id &&
+        item.variantId === product.masterVariant.id,
+    );
 
   return (
     <Link to={`/catalog/${product.id}`}>
@@ -89,6 +112,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Text type="secondary" className={styles.variantPrices}>
               there are options {uniqueSortedPrices.map(formatPrice).join(', ')}
             </Text>
+          )}
+
+          {onAddToCart && (
+            <AddToCartButton
+              productId={product.id}
+              variantId={product.masterVariant.id}
+              onAddToCart={onAddToCart}
+              disabled={isInCart || isAddingCurrentProduct}
+              loading={isAddingCurrentProduct}
+            />
           )}
         </Space>
       </Card>

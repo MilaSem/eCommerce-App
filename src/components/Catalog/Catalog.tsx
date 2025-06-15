@@ -9,6 +9,9 @@ import { ProductTabs } from './ProductTabs';
 import { ProductCard } from '../ProductCard/ProductCard';
 import { Filters } from '../Filters/Filters';
 
+import { useCartStore } from '@/stores/cartStore';
+import { useCustomerStore } from '@/stores/customerStore';
+
 import {
   fetchProducts,
   fetchFilteredProducts,
@@ -32,7 +35,7 @@ export const Catalog = () => {
   const [draftFilters, setDraftFilters] = useState<FiltersPairs>({});
   const [appliedFilters, setAppliedFilters] = useState<FiltersPairs>({});
 
-  const [filtersVisible, setFiltersVisible] = useState(true);
+  const [filtersVisible, setFiltersVisible] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortOption, setSortOption] = useState<SortOption>('name_asc');
@@ -71,10 +74,11 @@ export const Catalog = () => {
   }, []);
 
   const swrKey = ['products', appliedFilters];
-  const { data: products, error } = useSWR<ProductProjection[], Error>(
-    swrKey,
-    fetcher,
-  );
+  const {
+    data: products,
+    error,
+    isLoading,
+  } = useSWR<ProductProjection[], Error>(swrKey, fetcher);
 
   const clearFilters = () => {
     setDraftFilters({});
@@ -98,9 +102,33 @@ export const Catalog = () => {
     localStorage.setItem('filters', JSON.stringify(updated));
   };
 
-  if (error) return <div>Download error</div>;
+  const addToCart = useCartStore((state) => state.addToCart);
+  const addToLocalCart = useCartStore((state) => state.addToLocalCart);
+  const fetchCart = useCartStore((state) => state.fetchCart);
 
-  if (!products)
+  const client = useCustomerStore((state) => state.currentCustomer?.client);
+  const customerId = useCustomerStore(
+    (state) => state.currentCustomer?.data.body.customer.id,
+  );
+
+  const handleAddToCart = async (productId: string, variantId: number) => {
+    if (client && customerId) {
+      try {
+        await addToCart(client, customerId, productId, variantId, 1);
+        await fetchCart(client, customerId);
+        console.log('Product added to server cart');
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      addToLocalCart(productId, variantId, 1);
+      console.log('Product added to local cart');
+    }
+  };
+
+  if (error) return <div>Download error: {error.message}</div>;
+
+  if (isLoading)
     return (
       <div className={styles.spin}>
         <Spin size="large" />
@@ -108,7 +136,7 @@ export const Catalog = () => {
     );
 
   const filteredProducts = filterProducts(
-    products,
+    products!,
     selectedTypeId,
     searchQuery,
   );
@@ -127,7 +155,7 @@ export const Catalog = () => {
         type="primary"
         onClick={() => setFiltersVisible((prev) => !prev)}
       >
-        Filters {filtersVisible ? <CaretDownOutlined /> : <CaretUpOutlined />}
+        Filters {filtersVisible ? <CaretUpOutlined /> : <CaretDownOutlined />}
       </Button>
 
       <Filters
@@ -170,7 +198,11 @@ export const Catalog = () => {
           <h3 className={styles.unsuccess}>No products found</h3>
         ) : (
           sortedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              onAddToCart={handleAddToCart}
+            />
           ))
         )}
       </div>

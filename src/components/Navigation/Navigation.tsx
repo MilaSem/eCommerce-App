@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useCartStore } from '@/stores/cartStore';
 import styles from './Navigation.module.css';
 
 export const Navigation = () => {
@@ -12,6 +14,13 @@ export const Navigation = () => {
   const handleLinkClick = () => {
     setMenuOpen(false);
   };
+
+  const cart = useCartStore((state) => state.cart);
+  const localCart = useCartStore((state) => state.localCart);
+
+  const totalItems = cart
+    ? cart.lineItems.reduce((sum, item) => sum + item.quantity, 0)
+    : localCart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <nav className={styles.nav}>
@@ -41,7 +50,10 @@ export const Navigation = () => {
         </li>
         <li>
           <Link className={styles.link} to="/cart" onClick={handleLinkClick}>
-            Cart
+            <ShoppingCartOutlined />
+            {totalItems > 0 && (
+              <span className={styles.badge}>{totalItems}</span>
+            )}
           </Link>
         </li>
         <li>

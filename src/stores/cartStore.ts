@@ -14,6 +14,9 @@ interface LocalCartItem {
 }
 
 interface CartStore {
+  isMergingCart: boolean;
+  isCartReady: boolean;
+
   cart: Cart | null;
   loading: boolean;
   error: string | null;
@@ -84,6 +87,9 @@ export const useCartStore = create<CartStore>((set, get) => ({
   loading: false,
   error: null,
 
+  isMergingCart: false,
+  isCartReady: false,
+
   isAddingToCart: false,
   addingProductId: null,
 
@@ -94,10 +100,12 @@ export const useCartStore = create<CartStore>((set, get) => ({
     if (json) {
       try {
         const items: LocalCartItem[] = JSON.parse(json) as LocalCartItem[];
-        set({ localCart: items });
+        set({ localCart: items, isCartReady: true });
       } catch {
-        set({ localCart: [] });
+        set({ localCart: [], isCartReady: true });
       }
+    } else {
+      set({ localCart: [], isCartReady: true });
     }
   },
 
@@ -151,9 +159,13 @@ export const useCartStore = create<CartStore>((set, get) => ({
         .execute();
 
       const cart = response.body.results[0] || null;
-      set({ cart, loading: false });
+      set({ cart, loading: false, isCartReady: true });
     } catch (error) {
-      set({ error: (error as Error).message, loading: false });
+      set({
+        error: (error as Error).message,
+        loading: false,
+        isCartReady: true,
+      });
     }
   },
 
@@ -251,8 +263,15 @@ export const useCartStore = create<CartStore>((set, get) => ({
   },
 
   mergeLocalCartToServer: async (client, customerId) => {
+    if (get().isMergingCart) return;
+
+    set({ isMergingCart: true });
+
     const localCart = get().localCart;
-    if (localCart.length === 0) return;
+    if (localCart.length === 0) {
+      set({ isMergingCart: false });
+      return;
+    }
 
     await get().fetchCart(client, customerId);
     const cart = get().cart;
@@ -299,6 +318,8 @@ export const useCartStore = create<CartStore>((set, get) => ({
       get().clearLocalCart();
     } catch (error) {
       set({ error: (error as Error).message });
+    } finally {
+      set({ isMergingCart: false });
     }
   },
 

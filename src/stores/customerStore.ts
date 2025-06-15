@@ -42,9 +42,11 @@ export const useCustomerStore = create<CustomerState>()(
         console.log('[CustomerStore] created client', client);
         set({ currentCustomer: { data: customerData, client } });
 
-        const { mergeLocalCartToServer } = useCartStore.getState();
+        const { mergeLocalCartToServer, fetchCart } = useCartStore.getState();
 
         await mergeLocalCartToServer(client, customerData.body.customer.id);
+
+        await fetchCart(client, customerData.body.customer.id);
       },
 
       logout: () => {
@@ -55,6 +57,8 @@ export const useCustomerStore = create<CustomerState>()(
       initClientFromPersist: (customerData) => {
         const client = ctpClient.createClient();
         set({ currentCustomer: { data: customerData, client } });
+
+        useCartStore.getState().loadLocalCart();
       },
     }),
     {

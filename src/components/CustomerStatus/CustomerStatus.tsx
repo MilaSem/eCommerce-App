@@ -1,10 +1,10 @@
-import { customerStore } from '@/stores/customerStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { LogoutButton } from '../LogoutButton/LogoutButton';
 
 import styles from './CustomerStatus.module.css';
 
 export const CustomerStatus: React.FC = () => {
-  const customerData = customerStore((state) => state.currentCustomer);
+  const customerData = useCustomerStore((state) => state.currentCustomer);
 
   if (!customerData) {
     return (
@@ -17,7 +17,7 @@ export const CustomerStatus: React.FC = () => {
   return (
     <div className={styles.container}>
       <h4 className={styles.header}>
-        Welcome, {customerData.body.customer.firstName}!
+        Welcome, {customerData.data.body.customer.firstName}!
       </h4>
       <LogoutButton />
     </div>

@@ -11,7 +11,7 @@ import { LoginPage } from './routes/LoginPage/LoginPage';
 import { LoginRoute } from './routes/LoginPage/LoginRoute';
 import { RegisterPage } from './routes/RegisterPage/RegisterPage';
 import { Page404 } from './routes/Page404/Page404';
-import { ProductDetails } from '@/components/ProductDetails/ProductDetais';
+import { ProductDetails } from '@/components/ProductDetails/ProductDetails';
 import { UserProfileRoute } from './routes/UserProfile/UserProfileRoute';
 
 export const AppRouter = () => {

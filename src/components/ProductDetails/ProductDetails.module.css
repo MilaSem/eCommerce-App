@@ -9,10 +9,13 @@
 
 .image {
   width: 50%;
-  max-width: 400px;
-  height: auto;
+  max-width: 20rem;
+  height: 20rem;
+  object-fit: cover;
+  object-position: center;
   margin: 0 auto;
   border-radius: 1rem;
+  display: block;
 }
 
 .title {
@@ -42,4 +45,19 @@
 
 .attributes {
   margin-top: 1.5rem;
+}
+
+.spin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: auto;
+}
+
+.buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }

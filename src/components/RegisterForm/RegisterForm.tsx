@@ -12,7 +12,7 @@ import {
 } from 'antd';
 
 import { customerCreate } from '@/services/customerCreateService';
-import { customerStore } from '@/stores/customerStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { validateAge, validatePassword } from '@/utils/validators';
 
 import { AddressBlock } from '@/components/RegisterForm/AddressBlock';
@@ -77,11 +77,22 @@ const reducer = (state: State, action: Action): State => {
 export const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
 
-  const login = customerStore((state) => state.login);
+  const login = useCustomerStore((state) => state.login);
 
   const [form] = Form.useForm<FormValues>();
 
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleRegister = async (
+    response: Awaited<ReturnType<typeof customerCreate>>,
+    email: string,
+    password: string,
+  ) => {
+    await login(response, email, password);
+    console.log(response.body);
+    message.success('Registration successful!');
+    void navigate('/');
+  };
 
   const handleRadioChange = (e: RadioChangeEvent) => {
     dispatch({
@@ -117,9 +128,7 @@ export const RegisterForm: React.FC = () => {
     )
       .then((response) => {
         if (response) {
-          login(response);
-          console.log(response.body);
-          void navigate('/');
+          void handleRegister(response, values.email, values.password);
         }
       })
       .catch((error: ApiError) => {

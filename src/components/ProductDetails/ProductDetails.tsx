@@ -4,7 +4,12 @@ import { Card, Typography, Space, Descriptions, Carousel, Spin } from 'antd';
 
 import type { ProductProjection } from '@commercetools/platform-sdk';
 
+import { useCartStore } from '@/stores/cartStore';
+import { useCustomerStore } from '@/stores/customerStore';
+
 import { fetchProductById } from '@/services/getProductsService';
+import { AddToCartButton } from '../AddToCartButton/AddToCartButton';
+import { RemoveFromCartButton } from '../RemoveFromCartButton/RemoveFromCartButton';
 import styles from './ProductDetails.module.css';
 
 const { Title, Paragraph, Text } = Typography;
@@ -12,27 +17,90 @@ const { Title, Paragraph, Text } = Typography;
 export const ProductDetails: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
 
-  const { data: product, error } = useSWR<ProductProjection, Error>(
+  const {
+    addToCart,
+    addToLocalCart,
+    removeFromCart,
+    removeFromLocalCart,
+    fetchCart,
+    cart,
+    localCart,
+    isAddingToCart,
+    addingProductId,
+  } = useCartStore();
+
+  const client = useCustomerStore((state) => state.currentCustomer?.client);
+  const customerId = useCustomerStore(
+    (state) => state.currentCustomer?.data.body.customer.id,
+  );
+
+  const {
+    data: product,
+    error,
+    isLoading,
+  } = useSWR<ProductProjection, Error>(
     productId ? ['product', productId] : null,
     () => fetchProductById(productId!),
   );
 
-  if (!product)
+  if (isLoading) {
     return (
       <div className={styles.spin}>
         <Spin size="large" />
       </div>
     );
+  }
 
-  if (error) return <div>Error: {error.message}</div>;
-  if (!product) return <div>Loading...</div>;
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
+  const variantId = product.masterVariant.id;
+
+  const isInCart =
+    cart?.lineItems?.some(
+      (item) => item.productId === product.id && item.variant?.id === variantId,
+    ) ||
+    localCart?.some(
+      (item) => item.productId === product.id && item.variantId === variantId,
+    );
+
+  const isAddingCurrentProduct =
+    isAddingToCart && addingProductId === product.id;
+
+  const handleAddToCart = async (productId: string, variantId: number) => {
+    try {
+      if (client && customerId) {
+        await addToCart(client, customerId, productId, variantId, 1);
+        await fetchCart(client, customerId);
+      } else {
+        addToLocalCart(productId, variantId, 1);
+      }
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+    }
+  };
+
+  const handleRemoveFromCart = async (productId: string, variantId: number) => {
+    try {
+      if (client && cart) {
+        await removeFromCart(client, productId, variantId);
+        await fetchCart(client, customerId!);
+      } else {
+        removeFromLocalCart(productId, variantId);
+      }
+    } catch (error) {
+      console.error('Error removing product from cart:', error);
+    }
+  };
 
   const name = product.name?.['en-US'] || 'untitled';
-
   const images = product.masterVariant?.images || [];
-
   const description = product.description?.['en-US'] || 'undescription';
-
   const prices = product.masterVariant?.prices || [];
 
   const baseCentAmount = prices[0]?.value.centAmount;
@@ -57,7 +125,6 @@ export const ProductDetails: React.FC = () => {
           ))}
         </Carousel>
       )}
-
       <Title level={3} className={styles.title}>
         {name}
       </Title>
@@ -89,7 +156,7 @@ export const ProductDetails: React.FC = () => {
       >
         {product.masterVariant.attributes?.map(
           (attribute) =>
-            attribute.name != 'price' && (
+            attribute.name !== 'price' && (
               <Descriptions.Item
                 key={attribute.name}
                 label={attribute.name.replace(/-/g, ' ')}
@@ -100,6 +167,22 @@ export const ProductDetails: React.FC = () => {
             ),
         )}
       </Descriptions>
+
+      <div className={styles.buttons}>
+        <AddToCartButton
+          productId={product.id}
+          variantId={variantId}
+          onAddToCart={handleAddToCart}
+          loading={isAddingCurrentProduct}
+          disabled={isAddingCurrentProduct || isInCart}
+        />
+        <RemoveFromCartButton
+          productId={product.id}
+          variantId={variantId}
+          onRemoveFromCart={handleRemoveFromCart}
+          disabled={!isInCart}
+        />
+      </div>
     </Card>
   );
 };

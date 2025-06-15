@@ -51,3 +51,10 @@
   height: 100vh;
   width: auto;
 }
+
+.buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}

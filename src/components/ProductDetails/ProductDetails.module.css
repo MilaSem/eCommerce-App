@@ -9,10 +9,13 @@
 
 .image {
   width: 50%;
-  max-width: 400px;
-  height: auto;
+  max-width: 20rem;
+  height: 20rem;
+  object-fit: cover;
+  object-position: center;
   margin: 0 auto;
   border-radius: 1rem;
+  display: block;
 }
 
 .title {

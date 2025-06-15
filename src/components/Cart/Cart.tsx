@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useCartStore } from '@/stores/cartStore';
 import { useCustomerStore } from '@/stores/customerStore';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
+import styles from './Cart.module.css';
 
 export const Cart = () => {
   const {
@@ -53,7 +54,12 @@ export const Cart = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className={styles.spin}>
+        <Spin size="large" />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   if (customerId) {

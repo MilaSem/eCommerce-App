@@ -6,10 +6,6 @@ import styles from './CustomerStatus.module.css';
 export const CustomerStatus: React.FC = () => {
   const customerData = useCustomerStore((state) => state.currentCustomer);
 
-  if (customerData) {
-    console.log('Customer Data:', customerData);
-  }
-
   if (!customerData) {
     return (
       <div className={styles.container}>

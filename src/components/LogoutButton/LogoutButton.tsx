@@ -1,12 +1,12 @@
 import { Button } from 'antd';
-import { customerStore } from '@/stores/customerStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { useNavigate } from 'react-router';
 import styles from './LogoutButton.module.css';
 
 export const LogoutButton: React.FC = () => {
   const navigate = useNavigate();
-  const customerData = customerStore((state) => state.currentCustomer);
-  const logout = customerStore((state) => state.logout);
+  const customerData = useCustomerStore((state) => state.currentCustomer);
+  const logout = useCustomerStore((state) => state.logout);
 
   const handleLogout = () => {
     if (customerData) {

@@ -1,25 +1,78 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type {
+  ByProjectKeyRequestBuilder,
   ClientResponse,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk';
+import { CtpClient } from '@/api/CtpClient';
+import { useCartStore } from './cartStore';
 
-interface CustomerState {
-  currentCustomer: ClientResponse<CustomerSignInResult> | null;
-  login: (customerData: ClientResponse<CustomerSignInResult>) => void;
-  logout: () => void;
+interface CurrentCustomer {
+  data: ClientResponse<CustomerSignInResult>;
+  client: ByProjectKeyRequestBuilder;
 }
 
-export const customerStore = create<CustomerState>()(
+interface CustomerState {
+  currentCustomer: CurrentCustomer | null;
+  login: (
+    customerData: ClientResponse<CustomerSignInResult>,
+    email: string,
+    password: string,
+  ) => Promise<void>;
+  logout: () => void;
+  initClientFromPersist: (
+    customerData: ClientResponse<CustomerSignInResult>,
+  ) => void;
+}
+
+const ctpClient = new CtpClient();
+
+export const useCustomerStore = create<CustomerState>()(
   persist(
     (set) => ({
       currentCustomer: null,
-      login: (customerData) => set({ currentCustomer: customerData }),
-      logout: () => set({ currentCustomer: null }),
+
+      login: async (customerData, email, password) => {
+        console.log('[CustomerStore] login', {
+          email,
+          customerId: customerData.body.customer.id,
+        });
+        const client = ctpClient.createCustomerClient(email, password);
+        console.log('[CustomerStore] created client', client);
+        set({ currentCustomer: { data: customerData, client } });
+
+        const { mergeLocalCartToServer, fetchCart } = useCartStore.getState();
+
+        await mergeLocalCartToServer(client, customerData.body.customer.id);
+
+        await fetchCart(client, customerData.body.customer.id);
+      },
+
+      logout: () => {
+        useCartStore.getState().clearCart();
+        set({ currentCustomer: null });
+      },
+
+      initClientFromPersist: (customerData) => {
+        const client = ctpClient.createClient();
+        set({ currentCustomer: { data: customerData, client } });
+
+        useCartStore.getState().loadLocalCart();
+      },
     }),
     {
       name: 'customerStore',
+      partialize: (state) => ({
+        currentCustomer: state.currentCustomer
+          ? { data: state.currentCustomer.data }
+          : null,
+      }),
+      onRehydrateStorage: () => (state) => {
+        if (state?.currentCustomer?.data) {
+          state.initClientFromPersist(state.currentCustomer.data);
+        }
+      },
     },
   ),
 );

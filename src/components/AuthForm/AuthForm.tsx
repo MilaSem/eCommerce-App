@@ -2,11 +2,15 @@ import { useNavigate } from 'react-router';
 
 import { Form, Input, Button, message } from 'antd';
 
-import { customerStore } from '@/stores/customerStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { loginCustomer } from '@/services/loginCustomerService';
 import { validatePassword } from '@/utils/validators';
 
 import styles from './AuthForm.module.css';
+import {
+  ClientResponse,
+  CustomerSignInResult,
+} from '@commercetools/platform-sdk';
 
 type FieldType = {
   email: string;
@@ -19,16 +23,24 @@ interface ApiError {
 
 export const AuthForm: React.FC = () => {
   const navigate = useNavigate();
-  const login = customerStore((state) => state.login);
+  const login = useCustomerStore((state) => state.login);
+
+  const handleLogin = async (
+    response: ClientResponse<CustomerSignInResult>,
+    email: string,
+    password: string,
+  ) => {
+    await login(response, email, password);
+    message.success('success enter!');
+    console.log(response.body);
+    void navigate('/');
+  };
 
   const onFinish = (values: FieldType) => {
     loginCustomer(values.email, values.password)
       .then((response) => {
         if (response) {
-          message.success('success enter!');
-          login(response);
-          console.log(response.body);
-          void navigate('/');
+          void handleLogin(response, values.email, values.password);
         }
       })
       .catch((error: ApiError) => {

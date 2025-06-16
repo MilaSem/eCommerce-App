@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router';
-import { customerStore } from '@/stores/customerStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { ReactNode } from 'react';
 
 interface LoginRouteProps {
@@ -7,7 +7,7 @@ interface LoginRouteProps {
 }
 
 export const LoginRoute: React.FC<LoginRouteProps> = ({ children }) => {
-  const { currentCustomer } = customerStore();
+  const { currentCustomer } = useCustomerStore();
   const location = useLocation();
 
   if (currentCustomer) {

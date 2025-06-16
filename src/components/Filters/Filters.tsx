@@ -1,196 +1,202 @@
 import { useEffect, useState } from 'react';
-import { Select, Input, Button } from 'antd';
+import { Select, InputNumber, Button } from 'antd';
+
+import {
+  brandOptions,
+  colorOptions,
+  floralSourceOptions,
+} from './filterOptions';
+
 import styles from './Filters.module.css';
 
 const { Option } = Select;
 
+type FiltersPairs = Record<string, string | number | boolean>;
+
 interface FiltersProps {
-  filters: Record<string, string | number | boolean>;
-  setFilters: (filters: Record<string, string | number | boolean>) => void;
+  filters: FiltersPairs;
+  setFilters: React.Dispatch<React.SetStateAction<FiltersPairs>>;
   clearFilters: () => void;
-  onApplyFilters: () => void;
+  onApplyFilters: (filters: FiltersPairs) => void;
+  onSelectChange: (key: string, value: string | number | boolean) => void;
+  visible?: boolean;
 }
 
 export const Filters: React.FC<FiltersProps> = ({
   filters,
   setFilters,
   clearFilters,
+  onApplyFilters,
+  onSelectChange,
+  visible = true,
 }) => {
-  const handleChange = (
-    attributeName: string,
-    value: string | number | boolean,
-  ) => {
-    setFilters({ ...filters, [attributeName]: value });
-  };
-
-  const [localFilters, setLocalFilters] = useState(filters);
+  const [localFilters, setLocalFilters] = useState<FiltersPairs>(filters);
 
   useEffect(() => {
     setLocalFilters(filters);
   }, [filters]);
 
-  const handlePriceChange = (type: 'priceMin' | 'priceMax', value: string) => {
-    const numericValue = value === '' ? '' : Number(value);
-    setLocalFilters({ ...localFilters, [type]: numericValue });
+  const handlePriceChange = (
+    type: 'priceMin' | 'priceMax',
+    value: number | null,
+  ) => {
+    setLocalFilters((prev) => ({ ...prev, [type]: value ?? '' }));
   };
 
   const handleWeightChange = (
     type: 'weightMin' | 'weightMax',
-    value: string,
+    value: number | null,
   ) => {
-    const numericValue = value === '' ? '' : Number(value);
-    setLocalFilters({ ...localFilters, [type]: numericValue });
+    setLocalFilters((prev) => ({ ...prev, [type]: value ?? '' }));
   };
 
   const handlePriceFilterApply = () => {
-    setFilters(localFilters);
+    const updatedFilters = { ...localFilters };
+    setFilters(updatedFilters);
+    onApplyFilters(updatedFilters);
   };
 
   const handleWeightFilterApply = () => {
-    setFilters(localFilters);
+    const updatedFilters = { ...localFilters };
+    setFilters(updatedFilters);
+    onApplyFilters(updatedFilters);
   };
 
   return (
-    <div className={styles.container}>
-      <h2>Filters</h2>
+    <>
+      {visible && (
+        <div className={styles.container}>
+          <div className={styles.filterbox}>
+            <p>Brand:</p>
+            <Select
+              className={styles.select}
+              value={filters.brand || ''}
+              onChange={(value) => onSelectChange('brand', value)}
+            >
+              {brandOptions.map((opt) => (
+                <Option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </Option>
+              ))}
+            </Select>
+          </div>
 
-      <div className={styles.filterbox}>
-        <p>Brand:</p>
-        <Select
-          className={styles.select}
-          value={filters.brand || ''}
-          onChange={(value) => handleChange('brand', value)}
-        >
-          <Option value="">All</Option>
-          <Option value="dobryishmel">dobryishmel</Option>
-          <Option value="PurelyBuzz">PurelyBuzz</Option>
-        </Select>
-      </div>
+          <div className={styles.filterbox}>
+            <p>Floral source:</p>
+            <Select
+              className={styles.select}
+              value={filters['floral-source'] || ''}
+              onChange={(value) => onSelectChange('floral-source', value)}
+            >
+              {floralSourceOptions.map((opt) => (
+                <Option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </Option>
+              ))}
+            </Select>
+          </div>
 
-      <div className={styles.filterbox}>
-        <p>Floral source:</p>
-        <Select
-          className={styles.select}
-          value={filters['floral-source'] || ''}
-          onChange={(value) => handleChange('floral-source', value)}
-        >
-          <Option value="">All</Option>
-          <Option value="clover">clover</Option>
-          <Option value="wildflower">wildflower</Option>
-          <Option value="orange blossom">orange blossom</Option>
-        </Select>
-      </div>
+          <div className={styles.filterbox}>
+            <p>Color:</p>
+            <Select
+              className={styles.select}
+              value={filters.color || ''}
+              onChange={(value) => onSelectChange('color', value)}
+            >
+              {colorOptions.map((opt) => (
+                <Option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </Option>
+              ))}
+            </Select>
+          </div>
 
-      <div className={styles.filterbox}>
-        <p>Color:</p>
-        <Select
-          className={styles.select}
-          value={filters.color || ''}
-          onChange={(value) => handleChange('color', value)}
-        >
-          <Option value="">All</Option>
-          <Option value="light amber">light amber</Option>
-          <Option value="dark amber">dark amber</Option>
-          <Option value="bright golden">bright golden</Option>
-        </Select>
-      </div>
+          <div className={styles.filterbox}>
+            <p>Weight (g) from:</p>
+            <InputNumber
+              className={styles.input}
+              min={0}
+              value={localFilters.weightMin as number | undefined}
+              onChange={(value) => handleWeightChange('weightMin', value)}
+              onPressEnter={handleWeightFilterApply}
+            />
+            <p>to:</p>
+            <InputNumber
+              className={styles.input}
+              min={0}
+              value={localFilters.weightMax as number | undefined}
+              onChange={(value) => handleWeightChange('weightMax', value)}
+              onPressEnter={handleWeightFilterApply}
+            />
+            <Button
+              className={styles.okbutton}
+              type="primary"
+              onClick={handleWeightFilterApply}
+            >
+              ok
+            </Button>
+          </div>
 
-      <div className={styles.filterbox}>
-        <p>Weight (g) from:</p>
-        <Input
-          className={styles.input}
-          type="number"
-          value={
-            localFilters.weightMin !== undefined
-              ? String(localFilters.weightMin)
-              : ''
-          }
-          onChange={(e) => handleWeightChange('weightMin', e.target.value)}
-        />
-        <p>to:</p>
-        <Input
-          className={styles.input}
-          type="number"
-          value={
-            localFilters.weightMax !== undefined
-              ? String(localFilters.weightMax)
-              : ''
-          }
-          onChange={(e) => handleWeightChange('weightMax', e.target.value)}
-        />
-        <Button
-          className={styles.okbutton}
-          type="primary"
-          onClick={handleWeightFilterApply}
-        >
-          ok
-        </Button>
-      </div>
+          <div className={styles.filterbox}>
+            <p>Organic certification:</p>
+            <Select
+              className={styles.select}
+              value={
+                typeof filters['organic-certification'] === 'boolean'
+                  ? String(filters['organic-certification'])
+                  : ''
+              }
+              onChange={(value) =>
+                onSelectChange(
+                  'organic-certification',
+                  value === '' ? false : value === 'true',
+                )
+              }
+            >
+              <Option value="">All</Option>
+              <Option value="true">Yes</Option>
+              <Option value="false">No</Option>
+            </Select>
+          </div>
 
-      <div className={styles.filterbox}>
-        <p>Organic certification:</p>
-        <Select
-          className={styles.select}
-          value={
-            typeof filters['organic-certification'] === 'boolean'
-              ? String(filters['organic-certification'])
-              : ''
-          }
-          onChange={(value) =>
-            handleChange(
-              'organic-certification',
-              value === '' ? false : value === 'true',
-            )
-          }
-        >
-          <Option value="">All</Option>
-          <Option value="true">Yes</Option>
-          <Option value="false">No</Option>
-        </Select>
-      </div>
+          <div className={styles.filterbox}>
+            <p>Price ($) from:</p>
+            <InputNumber
+              className={styles.input}
+              min={0}
+              value={localFilters.priceMin as number | undefined}
+              onChange={(value) => handlePriceChange('priceMin', value)}
+              onPressEnter={handlePriceFilterApply}
+            />
+            <p>to:</p>
+            <InputNumber
+              className={styles.input}
+              min={0}
+              value={localFilters.priceMax as number | undefined}
+              onChange={(value) => handlePriceChange('priceMax', value)}
+              onPressEnter={handlePriceFilterApply}
+            />
+            <Button
+              className={styles.okbutton}
+              type="primary"
+              onClick={handlePriceFilterApply}
+            >
+              ok
+            </Button>
+          </div>
 
-      <div className={styles.filterbox}>
-        <p>Price ($) from:</p>
-        <Input
-          className={styles.input}
-          type="number"
-          value={
-            localFilters.priceMin !== undefined
-              ? String(localFilters.priceMin)
-              : ''
-          }
-          onChange={(e) => handlePriceChange('priceMin', e.target.value)}
-        />
-        <p>to:</p>
-        <Input
-          className={styles.input}
-          type="number"
-          value={
-            localFilters.priceMax !== undefined
-              ? String(localFilters.priceMax)
-              : ''
-          }
-          onChange={(e) => handlePriceChange('priceMax', e.target.value)}
-        />
-        <Button
-          className={styles.okbutton}
-          type="primary"
-          onClick={handlePriceFilterApply}
-        >
-          ok
-        </Button>
-      </div>
+          <Button
+            className={styles.button}
+            type="primary"
+            danger
+            onClick={clearFilters}
+          >
+            Reset
+          </Button>
+        </div>
+      )}
 
-      <Button
-        className={styles.button}
-        type="primary"
-        danger
-        onClick={clearFilters}
-      >
-        Reset
-      </Button>
-
-      <div>
+      <div className={styles.activeFilters}>
         <h3>Products with selected filters:</h3>
         {Object.entries(filters).map(
           ([key, value]) =>
@@ -203,6 +209,6 @@ export const Filters: React.FC<FiltersProps> = ({
             ),
         )}
       </div>
-    </div>
+    </>
   );
 };

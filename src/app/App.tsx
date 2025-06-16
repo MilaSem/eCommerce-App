@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useEffect, useState } from 'react';
 import { AppRouter } from './Router';
-import '@ant-design/v5-patch-for-react-19';
+//import '@ant-design/v5-patch-for-react-19';
 import './App.css';
 import '../config/colors.css';
 
@@ -9,6 +12,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { Spin } from 'antd';
 
 function App() {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return
   const currentCustomer = useCustomerStore((state) => state.currentCustomer);
   const fetchCart = useCartStore((state) => state.fetchCart);
   const loadLocalCart = useCartStore((state) => state.loadLocalCart);

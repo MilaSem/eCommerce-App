@@ -5,7 +5,9 @@ import type {
   LineItemDraft,
   CartAddLineItemAction,
   CartRemoveLineItemAction,
+  ProductProjection,
 } from '@commercetools/platform-sdk';
+import { fetchProductById } from '@/services/getProductsService';
 
 interface LocalCartItem {
   productId: string;
@@ -69,6 +71,25 @@ interface CartStore {
     cartId: string,
     version: number,
   ) => Promise<void>;
+
+  updateLineItemQuantity: (
+    client: ByProjectKeyRequestBuilder,
+    cartId: string,
+    version: number,
+    lineItemId: string,
+    quantity: number,
+  ) => Promise<void>;
+
+  removeLineItemById: (
+    client: ByProjectKeyRequestBuilder,
+    cartId: string,
+    version: number,
+    lineItemId: string,
+  ) => Promise<void>;
+
+  productsData: Record<string, ProductProjection | undefined>;
+
+  loadProductData: (productId: string) => Promise<void>;
 }
 
 const LOCAL_CART_KEY = 'local_cart';
@@ -348,6 +369,88 @@ export const useCartStore = create<CartStore>((set, get) => ({
       set({ cart: response.body, error: null });
     } catch (error) {
       set({ error: (error as Error).message });
+    }
+  },
+
+  updateLineItemQuantity: async (
+    client,
+    cartId,
+    version,
+    lineItemId,
+    quantity,
+  ) => {
+    try {
+      const response = await client
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions: [
+              {
+                action: 'changeLineItemQuantity',
+                lineItemId,
+                quantity,
+              },
+            ],
+          },
+        })
+        .execute();
+
+      set({ cart: response.body, error: null });
+    } catch (error) {
+      set({ error: (error as Error).message });
+    }
+  },
+
+  removeLineItemById: async (client, cartId, version, lineItemId) => {
+    const cart = get().cart;
+    if (!cart) return;
+
+    const lineItem = cart.lineItems.find((item) => item.id === lineItemId);
+    if (!lineItem) return;
+
+    try {
+      const response = await client
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions: [
+              {
+                action: 'removeLineItem',
+                lineItemId,
+                quantity: lineItem.quantity,
+              },
+            ],
+          },
+        })
+        .execute();
+
+      set({ cart: response.body, error: null });
+    } catch (error) {
+      set({ error: (error as Error).message });
+      throw error;
+    }
+  },
+
+  productsData: {},
+
+  loadProductData: async (productId) => {
+    if (get().productsData[productId]) return;
+
+    try {
+      const productData = await fetchProductById(productId);
+
+      set((state) => ({
+        productsData: {
+          ...state.productsData,
+          [productId]: productData,
+        },
+      }));
+    } catch (error) {
+      console.error('Failed to load product data', error);
     }
   },
 }));

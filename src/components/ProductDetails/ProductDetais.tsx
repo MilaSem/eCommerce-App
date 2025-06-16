@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
 import useSWR from 'swr';
-import { Card, Typography, Space, Descriptions, Carousel } from 'antd';
-
+import { Card, Typography, Space, Descriptions, Carousel,Button } from 'antd';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 import type { Product } from '@commercetools/platform-sdk';
 
 import { fetchProductById } from '@/services/getProductsService';
@@ -76,7 +76,15 @@ export const ProductDetails: React.FC = () => {
           <Text strong className={styles.price}>
             {formatPrice(baseCentAmount)}
           </Text>
+          
         )}
+        <Button className={styles.button}  icon={<ShoppingCartOutlined />}  type="primary"  size={'middle'}  
+        onClick={(e) => {
+         e.preventDefault();
+        e.stopPropagation();  
+        }}
+        
+        >Add to cart</Button>
       </div>
 
       <Descriptions

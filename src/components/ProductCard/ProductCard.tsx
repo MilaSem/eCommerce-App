@@ -1,4 +1,8 @@
-import { Card, Image, Typography, Space } from 'antd';
+import { Card, Image, Typography, Space,Button } from 'antd';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+
+
+
 import { Link } from 'react-router';
 
 import type { Product } from '@commercetools/platform-sdk';
@@ -67,6 +71,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <Text strong>{formatPrice(baseCentAmount)}</Text>
           )}
         </Space>
+        <Button className={styles.button}  icon={<ShoppingCartOutlined />}  type="primary"  size={'middle'}  
+        onClick={(e) => {
+         e.preventDefault();
+        e.stopPropagation();  
+        }}
+        
+        >Add to cart</Button>
+
       </Card>
     </Link>
   );

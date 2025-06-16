@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 
   width: 70%;
@@ -17,6 +17,7 @@
   justify-content: flex-start;
 
   width: 40%;
+  height: 80%;
   margin: 20px;
   border-radius: 20px;
 
@@ -26,6 +27,7 @@
 
 .container li p {
   padding: 20px;
+  text-align: left;
 }
 
 .link {

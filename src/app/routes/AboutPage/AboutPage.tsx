@@ -20,24 +20,41 @@ export const AboutPage = () => {
             alt="Mila"
           ></img>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            pharetra a ligula vitae posuere. Nullam dignissim condimentum orci
-            eu aliquet. Proin egestas nec nisi ut malesuada. Vivamus a nunc
-            quam. Vestibulum id sodales mi. Donec ut tellus ac lacus aliquet
-            laoreet. Class aptent taciti sociosqu ad litora torquent per conubia
-            nostra, per inceptos himenaeos. Praesent vel neque ex. Pellentesque
-            tortor lorem, dictum non luctus nec, tempus a lacus. Nunc dapibus
-            venenatis mauris, et congue ex rhoncus pellentesque.
+            {' '}
+            <cite>Я пишу код каждый день и вхожу в состояние потока.</cite>
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            pharetra a ligula vitae posuere. Nullam dignissim condimentum orci
-            eu aliquet. Proin egestas nec nisi ut malesuada. Vivamus a nunc
-            quam. Vestibulum id sodales mi. Donec ut tellus ac lacus aliquet
-            laoreet. Class aptent taciti sociosqu ad litora torquent per conubia
-            nostra, per inceptos himenaeos. Praesent vel neque ex. Pellentesque
-            tortor lorem, dictum non luctus nec, tempus a lacus. Nunc dapibus
-            venenatis mauris, et congue ex rhoncus pellentesque.
+            <b>Мила</b> — популяризатор науки, преподаватель в техническом ВУЗе
+            и начинающий фронтенд-разработчик из города Кирова. Среди ее
+            интересов — информационные технологии, векторная графика, научные
+            открытия и космос. Много лет Мила преподавала электротехнику,
+            стараясь сделать учебу интересной. Но в один прекрасный момент ее
+            сердце покорил Фронтенд. Сначала Мила делала небольшие лендинги,
+            изучала верстку и программирование по открытым источникам, и,
+            наконец, пришла в RSSchhol. Учеба оказалась очень увлекательной! В
+            планах Милы — научиться писать чистый, лаконичный код и найти своим
+            навыкам достойное применение.
+          </p>
+          <p>
+            <b>Skills:</b> HTML, CSS, Figma, JavaScript, TypeScript, Vite,
+            React, Git, Adobe Illustrator, Ubuntu, Inkscape
+          </p>
+          <p>
+            <b>Projects:</b>{' '}
+            <a href="https://milasem-react-redux-rtk.netlify.app/?page=1">
+              Проект RS School React
+            </a>
+            , создающий веб-интерфейс для поиска и отображения произведений
+            искусства с использованием API Чикагского института искусств.
+          </p>
+
+          <p>
+            Мила — ответственный и чуткий тимлид, на проекте отважно бралась за
+            самые сложные задачи, поддерживала команду и вселяла веру в себя.
+            Разобралась в настройках Merchant Center и создала рабочую основу
+            проекта, настроила интеграцию с пользовательским интерфейсом,
+            сделала форму регистрации. Грамотно распределяла задачи с учетом
+            уровня и навыков всех участников.
           </p>
         </li>
         <li className={styles.anton}>
@@ -54,24 +71,43 @@ export const AboutPage = () => {
             alt="Anton"
           ></img>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            pharetra a ligula vitae posuere. Nullam dignissim condimentum orci
-            eu aliquet. Proin egestas nec nisi ut malesuada. Vivamus a nunc
-            quam. Vestibulum id sodales mi. Donec ut tellus ac lacus aliquet
-            laoreet. Class aptent taciti sociosqu ad litora torquent per conubia
-            nostra, per inceptos himenaeos. Praesent vel neque ex. Pellentesque
-            tortor lorem, dictum non luctus nec, tempus a lacus. Nunc dapibus
-            venenatis mauris, et congue ex rhoncus pellentesque.
+            <cite>
+              Этот курс дал мне не только знания, но и уверенность в себе.
+              Финальное задание отлично развивает навыки командной разработки.
+            </cite>
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            pharetra a ligula vitae posuere. Nullam dignissim condimentum orci
-            eu aliquet. Proin egestas nec nisi ut malesuada. Vivamus a nunc
-            quam. Vestibulum id sodales mi. Donec ut tellus ac lacus aliquet
-            laoreet. Class aptent taciti sociosqu ad litora torquent per conubia
-            nostra, per inceptos himenaeos. Praesent vel neque ex. Pellentesque
-            tortor lorem, dictum non luctus nec, tempus a lacus. Nunc dapibus
-            venenatis mauris, et congue ex rhoncus pellentesque.
+            <b>Антон Ленский</b> — начинающий фронтенд-разработчик из Москвы.
+            Экономист по образованию, но работал в других сферах, в основном в
+            продажах электроники. Заинтересовался фронтенд-разработкой благодаря
+            различным обучающим видео на Youtube, и постепенно это стало его
+            хобби. Антон уже не первый раз проходит курс по фронтенду от RS
+            School. Несмотря на отсутствие ментора, не теряет мотивации и
+            продолжает обучение. Курс стал для Антона серьезным испытанием
+            знаний и навыков, но также и вдохновляющим ценным опытом.
+          </p>
+          <p>
+            <b>Skills:</b> HTML, CSS, Figma, JavaScript, TypeScript, Vite,
+            React, Git.
+          </p>
+          <p>
+            <b>Projects:</b>{' '}
+            <a href="https://github.com/hitman46923/js-cp-diploma-edited">
+              Дипломный проект — сайт бронирования билетов
+            </a>
+            , приложение погоды{' '}
+            <a href="https://github.com/hitman46923/Weather-App">Weather-App</a>
+            .
+          </p>
+
+          <p>
+            На проекте Антон выполнял самые трудоемкие задачи, требующие
+            внимания, терпения и логического мышления. Благодаря ему заработали
+            форма входа, корзина, страница пользователя. Антон — компетентный и
+            ответственный участник команды, кажется, для него нет ничего не
+            возможного. Его уверенность в успехе передавалась другим участникам
+            команды, благодаря этому удалось сохранить мотивацию на высоком
+            уровне до конца проекта.
           </p>
         </li>
         <li className={styles.nadya}>
@@ -88,24 +124,39 @@ export const AboutPage = () => {
             alt="Nadya"
           ></img>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            pharetra a ligula vitae posuere. Nullam dignissim condimentum orci
-            eu aliquet. Proin egestas nec nisi ut malesuada. Vivamus a nunc
-            quam. Vestibulum id sodales mi. Donec ut tellus ac lacus aliquet
-            laoreet. Class aptent taciti sociosqu ad litora torquent per conubia
-            nostra, per inceptos himenaeos. Praesent vel neque ex. Pellentesque
-            tortor lorem, dictum non luctus nec, tempus a lacus. Nunc dapibus
-            venenatis mauris, et congue ex rhoncus pellentesque.
+            <cite>
+              Я хочу создавать сайты и приложения, которые будут помогать людям
+              сохранить психическое здоровье.
+            </cite>
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-            pharetra a ligula vitae posuere. Nullam dignissim condimentum orci
-            eu aliquet. Proin egestas nec nisi ut malesuada. Vivamus a nunc
-            quam. Vestibulum id sodales mi. Donec ut tellus ac lacus aliquet
-            laoreet. Class aptent taciti sociosqu ad litora torquent per conubia
-            nostra, per inceptos himenaeos. Praesent vel neque ex. Pellentesque
-            tortor lorem, dictum non luctus nec, tempus a lacus. Nunc dapibus
-            venenatis mauris, et congue ex rhoncus pellentesque.
+            <b>Надежда Козочкина</b> живет в Казахстане, город Уральск, работает
+            психологом частной практики и пишет статьи. Есть также и технический
+            бэкграунд — работа в экологическом проектировании. Фронтенд был
+            интересен давно, раньше Надежда делала страницы на Wordpress для
+            себя и своих близких, но ей всегда хотелось изучить весь процесс от
+            начала до конца. С переездом из России Надежда решила получить новую
+            профессию и пришла на курс RS School с намерением дойти до конца.
+            Это было непросто, курс оказался очень сложным, но в процессе
+            появился азарт и огромный интерес к веб-разработке.
+          </p>
+          <p>
+            <b>Skills:</b> HTML, CSS, JavaScript, Typescript, Git, Github, Adobe
+            Photoshop, Illustrator, CorelDraw, Figma, Canva, SEO.
+          </p>
+          <p>
+            <b>Projects:</b> Учебная работа
+            <a href="https://kozochkina82.github.io/cssMemeSlider/">
+              CSS Meme Slider
+            </a>
+            , попала в десятку лучших на подготовительном курсе.
+          </p>
+          <p>
+            На проекте Надежда реализовала свое стремление к гармонии — она
+            выполняла организационные и оформительские задачи: настройка
+            канбан-доски Project, создание README и страницы 404, настройка
+            панели навигации, заполнение каталога контентом и создание страницы
+            About Us.
           </p>
         </li>
       </ul>

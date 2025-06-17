@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 import { useCartStore } from '@/stores/cartStore';
 import styles from './Navigation.module.css';
 
@@ -34,7 +33,7 @@ export const Navigation = () => {
       <ul className={`${styles.menu} ${menuOpen ? styles.open : ''}`}>
         <li>
           <Link className={styles.link} to="/" onClick={handleLinkClick}>
-            <img src="/src/assets/bee3.svg" alt="bee" width="50"></img>
+            <img src="/assets/bee3.svg" alt="bee" width="50"></img>
           </Link>
         </li>
         <li>
@@ -50,19 +49,6 @@ export const Navigation = () => {
         <li>
           <Link className={styles.link} to="/about" onClick={handleLinkClick}>
             About
-          </Link>
-        </li>
-        <li>
-          <Link className={styles.link} to="/cart" onClick={handleLinkClick}>
-            <ShoppingCartOutlined />
-            {totalItems > 0 && (
-              <span className={styles.badge}>{totalItems}</span>
-            )}
-          </Link>
-        </li>
-        <li>
-          <Link className={styles.link} to="/profile" onClick={handleLinkClick}>
-            Profile
           </Link>
         </li>
         <li>
@@ -82,16 +68,19 @@ export const Navigation = () => {
         <li>
           <Link className={styles.link} to="/cart" onClick={handleLinkClick}>
             <img
-              src="/src/assets/cart-svgrepo-com1.svg"
+              src="/assets/cart-svgrepo-com1.svg"
               alt="cart"
               width="25"
             ></img>
+            {totalItems > 0 && (
+              <span className={styles.badge}>{totalItems}</span>
+            )}
           </Link>
         </li>
         <li>
           <Link className={styles.link} to="/profile" onClick={handleLinkClick}>
             <img
-              src="/src/assets/user-svgrepo-com31.svg"
+              src="/assets/user-svgrepo-com31.svg"
               alt="user"
               width="25"
             ></img>

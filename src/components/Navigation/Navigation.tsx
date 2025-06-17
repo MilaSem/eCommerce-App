@@ -31,8 +31,12 @@ export const Navigation = () => {
       >
         {menuOpen ? '✖' : '☰'}
       </button>
-
       <ul className={`${styles.menu} ${menuOpen ? styles.open : ''}`}>
+        <li>
+          <Link className={styles.link} to="/" onClick={handleLinkClick}>
+            <img src="/src/assets/bee3.svg" alt="bee" width="50"></img>
+          </Link>
+        </li>
         <li>
           <Link className={styles.link} to="/" onClick={handleLinkClick}>
             Main
@@ -73,6 +77,24 @@ export const Navigation = () => {
             onClick={handleLinkClick}
           >
             Register
+          </Link>
+        </li>
+        <li>
+          <Link className={styles.link} to="/cart" onClick={handleLinkClick}>
+            <img
+              src="/src/assets/cart-svgrepo-com1.svg"
+              alt="cart"
+              width="25"
+            ></img>
+          </Link>
+        </li>
+        <li>
+          <Link className={styles.link} to="/profile" onClick={handleLinkClick}>
+            <img
+              src="/src/assets/user-svgrepo-com31.svg"
+              alt="user"
+              width="25"
+            ></img>
           </Link>
         </li>
       </ul>

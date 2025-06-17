@@ -24,12 +24,15 @@
 .sort {
   position: relative;
   z-index: 0;
+
   display: flex;
   flex-direction: row;
   gap: 1rem;
-  margin: 1rem auto;
   align-items: center;
   justify-content: center;
+
+  margin: 1rem auto;
+
   text-align: center;
 }
 

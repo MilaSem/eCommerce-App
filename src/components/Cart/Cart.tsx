@@ -1,4 +1,4 @@
-/* import styles from './Cart.module.css';
+ import styles from './Cart.module.css';
 
 
 
@@ -61,4 +61,4 @@ return (
 )
 
   };
-    */
+    

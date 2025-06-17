@@ -56,6 +56,11 @@
   transition: 0.3s ease;
 }
 
+.badge {
+  margin-left: 0.5rem;
+  color: #85f94c;
+}
+
 @media (hover: hover) {
   .menubutton:hover {
     border: none;

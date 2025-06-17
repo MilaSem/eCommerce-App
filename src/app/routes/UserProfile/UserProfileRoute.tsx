@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router';
-import { customerStore } from '@/stores/customerStore';
+import { useCustomerStore } from '@/stores/customerStore';
 import { ReactNode } from 'react';
 
 interface UserProfileRouteProps {
@@ -9,7 +9,7 @@ interface UserProfileRouteProps {
 export const UserProfileRoute: React.FC<UserProfileRouteProps> = ({
   children,
 }) => {
-  const { currentCustomer } = customerStore();
+  const { currentCustomer } = useCustomerStore();
   const location = useLocation();
 
   if (!currentCustomer) {

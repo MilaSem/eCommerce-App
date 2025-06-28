@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useCartStore } from '@/stores/cartStore';
 import styles from './Navigation.module.css';
 
 export const Navigation = () => {
@@ -13,6 +15,13 @@ export const Navigation = () => {
     setMenuOpen(false);
   };
 
+  const cart = useCartStore((state) => state.cart);
+  const localCart = useCartStore((state) => state.localCart);
+
+  const totalItems = cart
+    ? cart.lineItems.reduce((sum, item) => sum + item.quantity, 0)
+    : localCart.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <nav className={styles.nav}>
       <button
@@ -22,8 +31,12 @@ export const Navigation = () => {
       >
         {menuOpen ? '✖' : '☰'}
       </button>
-
       <ul className={`${styles.menu} ${menuOpen ? styles.open : ''}`}>
+        <li>
+          <Link className={styles.link} to="/" onClick={handleLinkClick}>
+            <img src="/src/assets/bee3.svg" alt="bee" width="50"></img>
+          </Link>
+        </li>
         <li>
           <Link className={styles.link} to="/" onClick={handleLinkClick}>
             Main
@@ -41,7 +54,10 @@ export const Navigation = () => {
         </li>
         <li>
           <Link className={styles.link} to="/cart" onClick={handleLinkClick}>
-            Cart
+            <ShoppingCartOutlined />
+            {totalItems > 0 && (
+              <span className={styles.badge}>{totalItems}</span>
+            )}
           </Link>
         </li>
         <li>
@@ -61,6 +77,24 @@ export const Navigation = () => {
             onClick={handleLinkClick}
           >
             Register
+          </Link>
+        </li>
+        <li>
+          <Link className={styles.link} to="/cart" onClick={handleLinkClick}>
+            <img
+              src="/src/assets/cart-svgrepo-com1.svg"
+              alt="cart"
+              width="25"
+            ></img>
+          </Link>
+        </li>
+        <li>
+          <Link className={styles.link} to="/profile" onClick={handleLinkClick}>
+            <img
+              src="/src/assets/user-svgrepo-com31.svg"
+              alt="user"
+              width="25"
+            ></img>
           </Link>
         </li>
       </ul>

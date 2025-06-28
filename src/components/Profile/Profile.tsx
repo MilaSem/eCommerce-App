@@ -1,6 +1,6 @@
 import { Button, Modal, Form, Input, message, DatePicker } from 'antd';
 import { FC, useState } from 'react';
-import { customerStore } from '../../stores/customerStore';
+import { useCustomerStore } from '../../stores/customerStore';
 import { apiRoot } from '@/api/api';
 import styles from './Profile.module.css';
 import { validateAge, validateStreet } from '@/utils/validators';
@@ -17,8 +17,8 @@ interface ProfileFormValues {
 }
 
 export const Profile: FC = () => {
-  const customer = customerStore(
-    (state) => state.currentCustomer?.body.customer,
+  const customer = useCustomerStore(
+    (state) => state.currentCustomer?.data.body.customer,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm<ProfileFormValues>();

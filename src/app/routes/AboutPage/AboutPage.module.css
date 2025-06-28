@@ -1,12 +1,171 @@
 .container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  width: 70%;
+  margin: 20px auto 0;
 
   list-style-type: none;
 }
 
+.container li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 40%;
+  height: 80%;
+  margin: 20px;
+  border-radius: 20px;
+
+  background-color: #eef8f6;
+  box-shadow: 4px 8px 19px 0 rgb(11 61 82 / 20%);
+}
+
+.container li p {
+  padding: 20px;
+  text-align: left;
+}
+
+.link {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #000;
+}
+
+.link:hover {
+  color: #f5aa00;
+}
+
 h2 {
   margin-top: 3%;
+}
+
+.avatar {
+  height: 200px;
+  border: 10px solid #f5aa00;
+  border-radius: 50%;
+}
+
+.mila {
+  background-image: url('/src/assets/beehive-374362.svg');
+  background-repeat: no-repeat;
+  background-position: 45% 5%;
+  background-size: 100%;
+}
+
+.anton {
+  background-image: url('/src/assets/beehive-374362.svg');
+  background-repeat: no-repeat;
+  background-position: 45% 5%;
+  background-size: 100%;
+}
+
+.nadya {
+  background-image: url('/src/assets/beehive-374362.svg');
+  background-repeat: no-repeat;
+  background-position: 45% 5%;
+  background-size: 100%;
+}
+
+.footer {
+  width: 100%;
+  background-color: #242424;
+}
+
+.footercontainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 55%;
+  margin: 0 auto;
+  padding: 5px 10px;
+
+  font-size: 1em;
+  color: #f5aa00;
+  text-transform: uppercase;
+}
+@media (width <=1240px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin: 10px auto 0;
+
+    list-style-type: none;
+  }
+
+  .container li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 90%;
+    margin: 15px;
+  }
+
+  .mila {
+    background-size: 80%;
+  }
+
+  .anton {
+    background-size: 80%;
+  }
+
+  .nadya {
+    background-size: 80%;
+  }
+
+  .footer {
+    width: 100%;
+    background-color: #242424;
+  }
+
+  .footercontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 90%;
+    margin: 0 auto;
+    padding: 5px 10px;
+
+    font-size: 1em;
+    color: #f5aa00;
+    text-transform: uppercase;
+  }
+}
+@media (width <=840px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    margin: 20px auto 0;
+  }
+}
+
+@media (width <=400px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    margin: 10px auto 0;
+  }
 }

@@ -15,7 +15,7 @@ export const AboutPage = () => {
           </a>
           <img
             className={styles.avatar}
-            src="/src/assets/Mila.jpg"
+            src="/assets/Mila.jpg"
             width="200"
             alt="Mila"
           ></img>
@@ -67,7 +67,7 @@ export const AboutPage = () => {
           </a>
           <img
             className={styles.avatar}
-            src="/src/assets/Anton.jpg"
+            src="/assets/Anton.jpg"
             alt="Anton"
           ></img>
           <p>
@@ -120,7 +120,7 @@ export const AboutPage = () => {
           </a>
           <img
             className={styles.avatar}
-            src="/src/assets/Nadya.jpg"
+            src="/assets/Nadya.jpg"
             alt="Nadya"
           ></img>
           <p>
@@ -164,7 +164,7 @@ export const AboutPage = () => {
         <div className={styles.footercontainer}>
           <a href="https://rs.school/" target="blank">
             <img
-              src="/src/assets/rss-logo.c19ce1b4.svg"
+              src="/assets/rss-logo.c19ce1b4.svg"
               width="50"
               alt="rsschool logo"
             ></img>
